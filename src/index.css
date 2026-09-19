@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heading: "Clash Display", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* Base brutalist resets */
+* {
+  border-color: #000000;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: "JetBrains Mono", monospace;
+  overflow-x: hidden;
+}
+
+.font-heading {
+  font-family: "Clash Display", -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Sharp custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-left: 1px solid #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #000000;
+}
+
+/* Marquee infinite scroll animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+

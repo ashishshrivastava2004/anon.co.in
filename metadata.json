@@ -1,0 +1,6 @@
+{
+  "name": "ANON - Archival Streetwear",
+  "description": "Brutalist luxury streetwear e-commerce brand featuring archival silhouettes, monochrome aesthetics, and technical tailoring.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
