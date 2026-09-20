@@ -53,7 +53,7 @@ export const Footer: React.FC = () => {
 
           <div className="font-mono text-[11px] text-neutral-500 space-y-1">
             <div>ATELIER COORDINATES: 35.6580° N, 139.7016° E</div>
-            <div>STATUS: ARCHIVE_01 RUNNING // INDIA DISPATCH</div>
+            <div>STATUS: DROP 1 SOON // INDIA DISPATCH</div>
           </div>
         </div>
 
@@ -133,16 +133,13 @@ export const Footer: React.FC = () => {
           <div className="pt-4 border-t border-neutral-200">
             <div className="text-[11px] font-bold text-black mb-2">COMMUNICATION CHANNELS:</div>
             <div className="flex flex-wrap gap-3 text-xs text-neutral-600">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-black underline">
+              <a href="https://www.instagram.com/anon.clo.in/" target="_blank" rel="noreferrer" className="hover:text-black underline">
                 [INSTAGRAM]
               </a>
-              <a href="https://are.na" target="_blank" rel="noreferrer" className="hover:text-black underline">
-                [ARE.NA]
-              </a>
-              <a href="https://discord.com" target="_blank" rel="noreferrer" className="hover:text-black underline">
+              <a href="https://discord.gg/vXZzdbsDf" target="_blank" rel="noreferrer" className="hover:text-black underline">
                 [DISCORD]
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-black underline">
+              <a href="https://x.com/anonapparelz" target="_blank" rel="noreferrer" className="hover:text-black underline">
                 [X / ARCHIVE]
               </a>
             </div>

@@ -30,7 +30,7 @@ export const CartDrawer: React.FC = () => {
     streetAddress: '',
     city: '',
     postalCode: '',
-    country: 'United States',
+    country: 'India',
     orderNotes: ''
   });
 
@@ -357,10 +357,10 @@ export const CartDrawer: React.FC = () => {
                 <div className="border border-black p-4 bg-black text-white space-y-3">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 size={18} className="text-white" />
-                    <span className="font-heading font-bold text-base">DISPATCH CONFIRMED</span>
+                    <span className="font-heading font-bold text-base">ORDER CONFIRMED</span>
                   </div>
                   <p className="text-xs text-neutral-300">
-                    Your order payload was successfully transmitted to the live backend server. An automated confirmation email has been dispatched to:
+                    Your order payload was successfully confirmed. An automated confirmation email has been dispatched to:
                   </p>
                   <div className="font-mono text-xs font-bold text-white bg-neutral-900 border border-neutral-700 p-2 break-all">
                     {lastConfirmedOrder.customer.email}
