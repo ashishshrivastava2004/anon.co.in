@@ -22,7 +22,10 @@ export const ProductDetailsPage: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [activeAccordion, setActiveAccordion] = useState<string | null>('fabric');
   const [addedFeedback, setAddedFeedback] = useState(false);
+  
+  // States for Image Gallery Sync
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [swiperInstance, setSwiperInstance] = useState<any>(null);
 
   const toggleAccordion = (key: string) => {
     setActiveAccordion((prev) => (prev === key ? null : key));
@@ -67,6 +70,7 @@ export const ProductDetailsPage: React.FC = () => {
                 nextEl: '.swiper-button-next-custom',
                 prevEl: '.swiper-button-prev-custom'
               }}
+              onSwiper={setSwiperInstance} // Save swiper instance here
               onSlideChange={(swiper) => setActiveImageIndex(swiper.activeIndex)}
               className="w-full aspect-[4/5]"
             >
@@ -109,7 +113,12 @@ export const ProductDetailsPage: React.FC = () => {
             {product.images.map((img, index) => (
               <button
                 key={index}
-                onClick={() => setActiveImageIndex(index)}
+                onClick={() => {
+                  setActiveImageIndex(index);
+                  if (swiperInstance) {
+                    swiperInstance.slideTo(index); // Move main slider to clicked thumbnail
+                  }
+                }}
                 className={`border aspect-[4/5] overflow-hidden bg-neutral-100 transition-opacity ${
                   activeImageIndex === index
                     ? 'border-2 border-black opacity-100'
@@ -253,7 +262,6 @@ export const ProductDetailsPage: React.FC = () => {
 
             {/* Technical Garment Specs Accordion */}
             <div className="border-t border-black pt-4 space-y-2">
-              {/* Accordion 1: Material & Specs */}
               <div className="border border-black">
                 <button
                   onClick={() => toggleAccordion('fabric')}
@@ -280,7 +288,6 @@ export const ProductDetailsPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Accordion 2: Fit & Measurements Matrix */}
               <div className="border border-black">
                 <button
                   onClick={() => toggleAccordion('fit')}
@@ -322,7 +329,6 @@ export const ProductDetailsPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Accordion 3: Hardware & Construction */}
               <div className="border border-black">
                 <button
                   onClick={() => toggleAccordion('hardware')}
@@ -344,7 +350,6 @@ export const ProductDetailsPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Accordion 4: Care Protocols */}
               <div className="border border-black">
                 <button
                   onClick={() => toggleAccordion('care')}
