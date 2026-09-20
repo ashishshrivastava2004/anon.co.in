@@ -79,7 +79,7 @@ export const OrderTrackingPage: React.FC = () => {
         {/* Page Header */}
         <div className="border-b border-black pb-6 space-y-2">
           <div className="text-xs font-mono text-neutral-500 uppercase tracking-widest">
-            LOGISTICS PROTOCOL // WORLDWIDE FREIGHT
+            LOGISTICS PROTOCOL // INDIAN FREIGHT
           </div>
           <h1 className="font-heading text-4xl sm:text-5xl font-extrabold tracking-tight">
             ORDER DISPATCH TRACKING
@@ -196,7 +196,7 @@ export const OrderTrackingPage: React.FC = () => {
 
               <div className="p-4 space-y-1">
                 <div className="text-[10px] text-neutral-500 uppercase">TOTAL SETTLEMENT</div>
-                <div className="font-bold text-black text-sm">${order.totalAmount} {order.currency}</div>
+                <div className="font-bold text-black text-sm">₹{order.totalAmount} {order.currency}</div>
                 <div className="text-[11px] text-neutral-600">DUTIES PRE-PAID</div>
               </div>
             </div>
@@ -253,7 +253,7 @@ export const OrderTrackingPage: React.FC = () => {
                       </div>
                     </div>
                     <div className="font-bold text-xs">
-                      ${item.price * item.quantity} USD
+                      ₹{item.price * item.quantity} INR
                     </div>
                   </div>
                 ))}

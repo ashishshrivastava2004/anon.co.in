@@ -44,13 +44,13 @@ export const ProductDetailsPage: React.FC = () => {
           to="/"
           className="flex items-center gap-1 hover:underline text-black font-semibold"
         >
-          <ArrowLeft size={14} /> &lt; RETURN TO ARCHIVE
+          <ArrowLeft size={14} /> &lt; BACK
         </Link>
         <div className="text-neutral-500 hidden sm:block">
           CATALOG // {product.category} // {product.code}
         </div>
         <div className="text-neutral-500">
-          DISPATCH: TOKYO ATELIER
+          DISPATCH: TOMMOROW
         </div>
       </div>
 
@@ -143,7 +143,7 @@ export const ProductDetailsPage: React.FC = () => {
 
               <div className="flex items-baseline justify-between pt-2">
                 <span className="font-heading text-2xl sm:text-3xl font-bold">
-                  ${product.price} {product.currency}
+                  ₹{product.price} {product.currency}
                 </span>
                 <span className="text-[11px] text-neutral-600">
                   TAX &amp; ATELIER SURCHARGE INCLUDED
@@ -222,7 +222,7 @@ export const ProductDetailsPage: React.FC = () => {
                   className="flex-1 py-4 bg-black text-white border border-black hover:bg-white hover:text-black transition-colors font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 text-xs"
                 >
                   <ShoppingBag size={16} />
-                  <span>ADD TO CART // ${product.price * quantity}</span>
+                  <span>ADD TO CART // ₹{product.price * quantity}</span>
                 </button>
               </div>
 
@@ -243,7 +243,7 @@ export const ProductDetailsPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-neutral-200 text-[11px] text-neutral-600">
               <div className="flex items-center gap-1.5">
                 <Truck size={14} className="text-black" />
-                <span>WORLDWIDE AIR DISPATCH</span>
+                <span>INDIAN AIR DISPATCH</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <ShieldCheck size={14} className="text-black" />
@@ -401,7 +401,7 @@ export const ProductDetailsPage: React.FC = () => {
               <div className="font-mono text-xs space-y-1">
                 <div className="text-[10px] text-neutral-500">{rel.code}</div>
                 <div className="font-heading font-bold text-sm group-hover:underline">{rel.name}</div>
-                <div className="font-bold">${rel.price} USD</div>
+                <div className="font-bold">₹{rel.price} INR</div>
               </div>
             </div>
           ))}

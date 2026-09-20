@@ -7,7 +7,7 @@ export const PRODUCTS: Product[] = [
     name: '01 / HEAVYWEIGHT OVERSHOT HOODIE',
     tagline: '580 GSM Custom Loopback Terry / Raw Edge Trim',
     price: 240,
-    currency: 'USD',
+    currency: 'INR',
     category: 'TOPS',
     images: [
       'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1200&q=80',
@@ -40,7 +40,7 @@ export const PRODUCTS: Product[] = [
     name: '02 / MODULAR TACTICAL CARGO PANT',
     tagline: 'Technical Ventile Cotton / Magnetic Fidlock Closures',
     price: 320,
-    currency: 'USD',
+    currency: 'INR',
     category: 'BOTTOMS',
     images: [
       'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=1200&q=80',
@@ -73,7 +73,7 @@ export const PRODUCTS: Product[] = [
     name: '03 / TECHNICAL BALLISTIC SHELL JACKET',
     tagline: '3-Layer Membrane / Raccagni Asymmetric Two-Way Zip',
     price: 480,
-    currency: 'USD',
+    currency: 'INR',
     category: 'OUTERWEAR',
     images: [
       'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=1200&q=80',
@@ -105,7 +105,7 @@ export const PRODUCTS: Product[] = [
     name: '04 / INTERLOCK BOX TEE',
     tagline: '310 GSM Double-Faced Cotton / Stark Architectural Seam',
     price: 130,
-    currency: 'USD',
+    currency: 'INR',
     category: 'TOPS',
     images: [
       'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80',
@@ -137,7 +137,7 @@ export const PRODUCTS: Product[] = [
     name: '05 / TACTICAL HOLSTER VEST',
     tagline: '1000D Ballistic Cordura / Quick-Release Cobra Buckle',
     price: 280,
-    currency: 'USD',
+    currency: 'INR',
     category: 'ACCESSORIES',
     images: [
       'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1200&q=80',
@@ -163,7 +163,7 @@ export const PRODUCTS: Product[] = [
     name: '06 / ARCHIVAL MONOLITH LEATHER BOOT',
     tagline: 'Vegetable-Tanned Calfskin / Goodyear Welted Vibram Lug',
     price: 590,
-    currency: 'USD',
+    currency: 'INR',
     category: 'FOOTWEAR',
     images: [
       'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?auto=format&fit=crop&w=1200&q=80',
@@ -191,12 +191,12 @@ export const MOCK_ORDERS: Record<string, TrackedOrder> = {
     email: 'client@archival.co',
     createdAt: '2026-09-15 08:30 JST',
     status: 'IN_TRANSIT',
-    carrier: 'DHL Express Worldwide / Priority Cargo',
+    carrier: 'DHL Express India / Priority Cargo',
     trackingNumber: 'DHL-EX-8829104812',
     estimatedDelivery: 'SEPTEMBER 21, 2026',
     shippingAddress: '4-28-12 Jingumae, Shibuya-ku, Tokyo 150-0001, Japan',
     totalAmount: 560,
-    currency: 'USD',
+    currency: 'INR',
     items: [
       { name: '01 / HEAVYWEIGHT OVERSHOT HOODIE', code: 'AN-HD01-BLK', size: 'L', quantity: 1, price: 240 },
       { name: '02 / MODULAR TACTICAL CARGO PANT', code: 'AN-PT02-BLK', size: 'M', quantity: 1, price: 320 }
@@ -213,12 +213,12 @@ export const MOCK_ORDERS: Record<string, TrackedOrder> = {
     email: 'archivist@studio.org',
     createdAt: '2026-09-17 19:45 JST',
     status: 'PROCESSING',
-    carrier: 'DHL Express Worldwide Archival',
+    carrier: 'DHL Express  Indian Archival',
     trackingNumber: 'DHL-EX-4491028301',
     estimatedDelivery: 'SEPTEMBER 24, 2026',
     shippingAddress: '14 Greene St, SoHo, New York, NY 10013, USA',
     totalAmount: 480,
-    currency: 'USD',
+    currency: 'INR',
     items: [
       { name: '03 / TECHNICAL BALLISTIC SHELL JACKET', code: 'AN-JK03-BLK', size: 'L', quantity: 1, price: 480 }
     ],

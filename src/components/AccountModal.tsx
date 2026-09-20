@@ -67,7 +67,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({ isOpen, onClose }) =
                 onClick={onClose}
                 className="w-full py-2.5 px-3 border border-black hover:bg-neutral-100 transition-colors flex items-center justify-between text-xs"
               >
-                <span>VIEW GLOBAL COURIER PROTOCOLS</span>
+                <span>VIEW INDIAN COURIER PROTOCOLS</span>
                 <ExternalLink size={14} />
               </Link>
             </div>

@@ -133,7 +133,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       })),
       customer,
       totalAmount: subtotal,
-      currency: 'USD',
+      currency: 'INR',
       timestamp: new Date().toISOString()
     };
 
@@ -247,12 +247,12 @@ function saveLocalOrder(orderId: string, customer: CustomerDetails, items: CartI
       email: customer.email,
       createdAt: new Date().toLocaleString('en-US', { timeZoneName: 'short' }),
       status: 'PROCESSING',
-      carrier: 'DHL Express Worldwide Archival',
+      carrier: 'DHL Express  Indian Archival',
       trackingNumber: `DHL-EX-${Math.floor(1000000000 + Math.random() * 9000000000)}`,
       estimatedDelivery: '3-5 BUSINESS DAYS',
       shippingAddress: `${customer.streetAddress}, ${customer.city}, ${customer.postalCode}, ${customer.country}`,
       totalAmount: total,
-      currency: 'USD',
+      currency: 'INR',
       items: items.map((i) => ({
         name: i.product.name,
         code: i.product.code,

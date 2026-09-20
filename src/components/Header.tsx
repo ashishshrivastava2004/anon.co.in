@@ -24,9 +24,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch, onOpenAccount }) =
       <header className="sticky top-0 z-40 w-full bg-white border-b border-black select-none">
         {/* Top Minimal Notification Bar */}
         <div className="bg-black text-white px-4 py-1 text-xs font-mono flex items-center justify-between tracking-wider border-b border-black">
-          <span className="hidden sm:inline">ANON ARCHIVAL SYSTEM // SYSTEM_01 RELEASED</span>
-          <span className="mx-auto sm:mx-0">WORLDWIDE COMPLIMENTARY EXPRESS OVER $300</span>
-          <span className="hidden sm:inline text-right">EDITION: 2026.V1</span>
+          <span className="hidden sm:inline">ANON APPAREL</span>
+          <span className="hidden sm:inline text-right">INDIA SHIPMENT</span>
         </div>
 
         {/* Main Header Row */}

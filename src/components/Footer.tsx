@@ -24,12 +24,12 @@ export const Footer: React.FC = () => {
           <span className="mx-6">SYSTEM_01 ACTIVE</span>
           <span className="mx-6">LIMITED SMALL BATCH RUNS ONLY</span>
           <span className="mx-6">580 GSM JAPANESE COTTON TERRY</span>
-          <span className="mx-6">WORLDWIDE EXPRESS COURIER</span>
+          <span className="mx-6">INDIAN EXPRESS COURIER</span>
           <span className="mx-6">★ ANON ARCHIVAL RESEARCH LAB</span>
           <span className="mx-6">SYSTEM_01 ACTIVE</span>
           <span className="mx-6">LIMITED SMALL BATCH RUNS ONLY</span>
           <span className="mx-6">580 GSM JAPANESE COTTON TERRY</span>
-          <span className="mx-6">WORLDWIDE EXPRESS COURIER</span>
+          <span className="mx-6">INDIAN EXPRESS COURIER</span>
         </div>
       </div>
 

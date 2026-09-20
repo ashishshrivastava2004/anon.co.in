@@ -29,7 +29,7 @@ export const PoliciesPage: React.FC = () => {
             LEGAL PROTOCOLS &amp; POLICIES
           </h1>
           <p className="font-mono text-xs text-neutral-600 max-w-xl">
-            Uncompromising terms governing client privacy, cryptographic anonymity, global express
+            Uncompromising terms governing client privacy, cryptographic anonymity, indian express
             freight, and archival returns.
           </p>
         </div>
@@ -111,7 +111,7 @@ export const PoliciesPage: React.FC = () => {
                   POLICY SECTION 02
                 </span>
                 <h2 className="font-heading text-2xl font-bold">SHIPPING &amp; CUSTOMS PROTOCOLS</h2>
-                <span className="text-neutral-500 text-[11px]">WORLDWIDE CARRIER COURIER SERVICES</span>
+                <span className="text-neutral-500 text-[11px]">INDIAN CARRIER COURIER SERVICES</span>
               </div>
 
               <div className="space-y-4 text-neutral-800 leading-relaxed">

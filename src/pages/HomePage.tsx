@@ -31,7 +31,7 @@ export const HomePage: React.FC = () => {
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 border border-black text-xs font-mono bg-white">
                 <span className="w-2 h-2 bg-black inline-block animate-pulse"></span>
-                <span>SYSTEM_01 // ARCHIVE RELEASE</span>
+                <span>UPCOMING DROP 1</span>
               </div>
 
               <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tighter leading-[0.95] text-black">
@@ -79,7 +79,7 @@ export const HomePage: React.FC = () => {
           {/* Right Hero Column: Large Visual Editorial */}
           <div className="lg:col-span-6 relative bg-neutral-100 overflow-hidden flex items-center justify-center group min-h-[400px]">
             <img
-              src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1600&q=85"
+              src="\b_A_medium-full_studio.webp"
               alt="ANON Archival Editorial"
               className="w-full h-full object-cover object-top"
               referrerPolicy="no-referrer"
@@ -145,7 +145,7 @@ export const HomePage: React.FC = () => {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 border border-black transition-colors uppercase ${
+                className={`px-3 py-1.5 border border-black transition-colors uppercase ₹{
                   selectedCategory === cat
                     ? 'bg-black text-white font-bold'
                     : 'bg-white text-black hover:bg-neutral-100'
@@ -215,7 +215,7 @@ export const HomePage: React.FC = () => {
                       {product.name}
                     </h3>
                     <span className="font-bold text-base whitespace-nowrap">
-                      ${product.price} USD
+                      ₹{product.price} INR
                     </span>
                   </div>
                   <p className="text-neutral-500 text-[11px] mt-1 line-clamp-1">

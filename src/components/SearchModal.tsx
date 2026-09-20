@@ -103,7 +103,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <span className="font-bold text-sm">${item.price} USD</span>
+                  <span className="font-bold text-sm">₹{item.price} INR</span>
                   <div className="p-1 border border-black hover:bg-black hover:text-white">
                     <ArrowRight size={14} />
                   </div>

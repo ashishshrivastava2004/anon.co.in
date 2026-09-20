@@ -160,7 +160,7 @@ export const CartDrawer: React.FC = () => {
                               CODE: {item.product.code}
                             </div>
                             <div className="text-[11px] text-black font-semibold mt-0.5">
-                              SIZE: [{item.selectedSize}] // ${item.product.price} USD
+                              SIZE: [{item.selectedSize}] // ₹{item.product.price} INR
                             </div>
                           </div>
 
@@ -186,7 +186,7 @@ export const CartDrawer: React.FC = () => {
                             </div>
 
                             <div className="font-bold text-sm">
-                              ${item.product.price * item.quantity} USD
+                              ₹{item.product.price * item.quantity} INR
                             </div>
                           </div>
                         </div>
@@ -262,7 +262,7 @@ export const CartDrawer: React.FC = () => {
                       required
                       value={customer.phone}
                       onChange={handleInputChange}
-                      placeholder="+1 (555) 019-2831"
+                      placeholder="+91 3438746343"
                       className="w-full border border-black p-2.5 text-xs bg-white text-black outline-none"
                     />
                   </div>
@@ -276,14 +276,7 @@ export const CartDrawer: React.FC = () => {
                       onChange={handleInputChange}
                       className="w-full border border-black p-2.5 text-xs bg-white text-black outline-none"
                     >
-                      <option value="United States">United States</option>
-                      <option value="Japan">Japan</option>
-                      <option value="United Kingdom">United Kingdom</option>
-                      <option value="Germany">Germany</option>
-                      <option value="France">France</option>
-                      <option value="Canada">Canada</option>
-                      <option value="Australia">Australia</option>
-                      <option value="Singapore">Singapore</option>
+                      <option value="India">India</option>
                     </select>
                   </div>
                 </div>
@@ -390,7 +383,7 @@ export const CartDrawer: React.FC = () => {
                   </div>
                   <div className="flex justify-between text-xs">
                     <span>TOTAL CHARGED:</span>
-                    <span className="font-bold text-black">${lastConfirmedOrder.total} USD</span>
+                    <span className="font-bold text-black">₹{lastConfirmedOrder.total} INR</span>
                   </div>
                   <div className="flex justify-between text-xs">
                     <span>ITEMS ALLOCATED:</span>
@@ -411,7 +404,7 @@ export const CartDrawer: React.FC = () => {
                     onClick={handleClose}
                     className="w-full py-2.5 border border-black text-black hover:bg-neutral-100 transition-colors font-mono text-xs uppercase tracking-wider"
                   >
-                    CLOSE &amp; RETURN TO ARCHIVE
+                    CLOSE &amp; BACK
                   </button>
                 </div>
               </div>
@@ -424,12 +417,12 @@ export const CartDrawer: React.FC = () => {
               <div className="space-y-1.5 font-mono text-xs">
                 <div className="flex justify-between text-neutral-600">
                   <span>ITEMS SUB-TOTAL:</span>
-                  <span className="text-black font-semibold">${subtotal} USD</span>
+                  <span className="text-black font-semibold">₹{subtotal} INR</span>
                 </div>
                 <div className="flex justify-between text-neutral-600">
-                  <span>WORLDWIDE EXPRESS CARGO:</span>
+                  <span>INDIAN EXPRESS CARGO:</span>
                   <span className="text-black font-semibold">
-                    {subtotal >= 300 ? 'FREE (PROMO)' : '$25 USD'}
+                    {subtotal >= 300 ? 'FREE (PROMO)' : '₹25 INR'}
                   </span>
                 </div>
                 <div className="flex justify-between text-neutral-600">
@@ -438,7 +431,7 @@ export const CartDrawer: React.FC = () => {
                 </div>
                 <div className="border-t border-black pt-2 flex justify-between font-bold text-sm text-black">
                   <span>TOTAL DISPATCH AMOUNT:</span>
-                  <span>${subtotal >= 300 ? subtotal : subtotal + 25} USD</span>
+                  <span>₹{subtotal >= 300 ? subtotal : subtotal + 25} INR</span>
                 </div>
               </div>
 
