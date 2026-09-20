@@ -26,12 +26,11 @@ export const HomePage: React.FC = () => {
       {/* 1. HERO BANNER */}
       <section className="relative w-full border-b border-black">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 min-h-[80vh] items-stretch">
-          {/* Left Hero Column: Typographic Archival Statement */}
           <div className="lg:col-span-6 p-6 sm:p-10 lg:p-14 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-black bg-white">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 border border-black text-xs font-mono bg-white">
                 <span className="w-2 h-2 bg-black inline-block animate-pulse"></span>
-                <span>UPCOMING DROP 1</span>
+                <span>UPCOMING DROP 01</span>
               </div>
 
               <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tighter leading-[0.95] text-black">
@@ -76,17 +75,16 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Hero Column: Large Visual Editorial */}
           <div className="lg:col-span-6 relative bg-neutral-100 overflow-hidden flex items-center justify-center group min-h-[400px]">
+            {/* Slashes fixed here! */}
             <img
-              src="\b_A_medium-full_studio.webp"
+              src="/b_A_medium-full_studio.webp"
               alt="ANON Archival Editorial"
               className="w-full h-full object-cover object-top"
               referrerPolicy="no-referrer"
             />
             <div className="absolute inset-0 bg-black/10"></div>
 
-            {/* Spec Box Overlay */}
             <div className="absolute bottom-6 left-6 right-6 border border-black bg-white/95 p-4 font-mono text-xs flex items-center justify-between backdrop-blur-none">
               <div>
                 <span className="font-bold block text-sm">SYSTEM_01 HOODIE / HEAVYWEIGHT</span>
@@ -128,7 +126,6 @@ export const HomePage: React.FC = () => {
 
       {/* 3. NEW ARRIVALS GRID */}
       <section id="arrivals" className="w-full max-w-7xl mx-auto px-4 md:px-8 py-14">
-        {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-black pb-6 mb-8">
           <div>
             <div className="text-xs font-mono text-neutral-500 uppercase tracking-widest mb-1">
@@ -139,16 +136,15 @@ export const HomePage: React.FC = () => {
             </h2>
           </div>
 
-          {/* Category Filter Pills */}
           <div className="flex flex-wrap gap-2 font-mono text-xs">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 border border-black transition-colors uppercase ₹{
+                className={`px-4 py-2 border border-black transition-all duration-200 uppercase tracking-widest ${
                   selectedCategory === cat
-                    ? 'bg-black text-white font-bold'
-                    : 'bg-white text-black hover:bg-neutral-100'
+                    ? 'bg-black text-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
+                    : 'bg-white text-black font-medium hover:bg-neutral-100 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
                 }`}
               >
                 {cat}
@@ -157,7 +153,6 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
 
-        {/* The Grid: 1px black borders separating all cells */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-black divide-y md:divide-y-0 md:divide-x divide-black">
           {filteredProducts.map((product) => (
             <div
@@ -165,7 +160,6 @@ export const HomePage: React.FC = () => {
               onClick={() => navigate(`/product/${product.id}`)}
               className="group bg-white flex flex-col justify-between cursor-pointer border-b border-black last:border-b-0 lg:last:border-b md:nth-[2n]:border-r-0 hover:bg-neutral-50 transition-colors"
             >
-              {/* Product Image Stage */}
               <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden border-b border-black">
                 <img
                   src={product.images[0]}
@@ -174,19 +168,16 @@ export const HomePage: React.FC = () => {
                   referrerPolicy="no-referrer"
                 />
 
-                {/* SKU Badge */}
                 <div className="absolute top-3 left-3 bg-white border border-black px-2 py-0.5 text-[10px] font-mono tracking-wider">
                   {product.code}
                 </div>
 
-                {/* Stock alert */}
                 {product.stockCount <= 4 && (
                   <div className="absolute top-3 right-3 bg-black text-white border border-black px-2 py-0.5 text-[10px] font-mono">
                     LOW STOCK [{product.stockCount}]
                   </div>
                 )}
 
-                {/* Hover Quick Action */}
                 <div className="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
                   <button
                     onClick={(e) => handleQuickAdd(product, e)}
@@ -207,7 +198,6 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Product Info Block */}
               <div className="p-5 font-mono text-xs space-y-3 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start gap-2">
