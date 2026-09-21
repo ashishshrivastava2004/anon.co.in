@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, UserCheck, Package, Shield, ExternalLink } from 'lucide-react';
+import { X, UserCheck, Package, ShieldCheck, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface AccountModalProps {
@@ -8,89 +8,102 @@ interface AccountModalProps {
 }
 
 export const AccountModal: React.FC<AccountModalProps> = ({ isOpen, onClose }) => {
-  const [clientId] = useState('ANON-CLIENT-9104');
-  const [tier] = useState('TIER 01 / ARCHIVAL INNER CIRCLE');
+  const [clientId] = useState('ANON-9104');
+  const [tier] = useState('INNER CIRCLE');
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-white border border-black p-6 select-none font-mono text-xs shadow-none">
-        <div className="flex items-center justify-between border-b border-black pb-4 mb-6">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 bg-black inline-block"></span>
-            <h2 className="font-heading text-xl font-bold tracking-tight">CLIENT TERMINAL</h2>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-1 border border-black hover:bg-black hover:text-white transition-colors"
+    <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 sm:p-6 select-none">
+      
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+        onClick={onClose} 
+      />
+
+      {/* Modal Container */}
+      <div className="relative w-full max-w-md bg-white shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col">
+        
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-200 bg-white">
+          <h2 className="font-['Clash_Display'] text-2xl font-semibold tracking-tight uppercase text-black">
+            My Account
+          </h2>
+          <button 
+            onClick={onClose} 
+            className="p-2 -mr-2 text-neutral-500 hover:text-black hover:bg-neutral-100 rounded-full transition-colors"
           >
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
-        <div className="space-y-4">
-          <div className="border border-black p-4 bg-neutral-50 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-neutral-500">CLIENT ID:</span>
-              <span className="font-bold text-black bg-white px-2 py-0.5 border border-black">
-                {clientId}
+        {/* Content Body */}
+        <div className="p-6 space-y-6 font-['JetBrains_Mono']">
+          
+          {/* Profile Details Card */}
+          <div className="border border-neutral-200 p-4 bg-neutral-50 space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-neutral-500 font-bold uppercase tracking-widest">Client ID:</span>
+              <span className="font-bold text-black">{clientId}</span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-neutral-500 font-bold uppercase tracking-widest">Status:</span>
+              <span className="text-black font-bold flex items-center gap-1">
+                <UserCheck size={14} /> ACTIVE
               </span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-neutral-500">ACCESS STATUS:</span>
-              <span className="text-black font-semibold flex items-center gap-1">
-                <UserCheck size={14} /> ACTIVE &amp; VERIFIED
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-neutral-500">MEMBERSHIP:</span>
-              <span className="text-black font-bold">{tier}</span>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-neutral-500 font-bold uppercase tracking-widest">Tier:</span>
+              <span className="text-white font-bold bg-black px-2 py-0.5 tracking-wider">{tier}</span>
             </div>
           </div>
 
-          <div className="border border-black p-4 space-y-3">
-            <div className="font-bold uppercase tracking-wider flex items-center gap-2 text-black">
-              <Package size={15} /> QUICK ACTIONS
+          {/* Quick Links */}
+          <div className="space-y-3">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 mb-2">
+              Quick Actions
             </div>
-            <div className="space-y-2">
-              <Link
-                to="/track"
-                onClick={onClose}
-                className="w-full py-2.5 px-3 border border-black bg-black text-white hover:bg-white hover:text-black transition-colors flex items-center justify-between text-xs"
-              >
-                <span>OPEN ORDER DISPATCH TRACKER</span>
-                <ExternalLink size={14} />
-              </Link>
-              <Link
-                to="/policies?tab=shipping"
-                onClick={onClose}
-                className="w-full py-2.5 px-3 border border-black hover:bg-neutral-100 transition-colors flex items-center justify-between text-xs"
-              >
-                <span>VIEW INDIAN COURIER PROTOCOLS</span>
-                <ExternalLink size={14} />
-              </Link>
-            </div>
+            
+            <Link 
+              to="/track" 
+              onClick={onClose} 
+              className="w-full py-3.5 px-4 border border-neutral-200 hover:border-black transition-colors flex items-center justify-between text-xs font-bold uppercase tracking-widest text-black group"
+            >
+              <span className="flex items-center gap-3">
+                <Package size={16} strokeWidth={1.5} /> Track Order
+              </span>
+              <ArrowRight size={16} className="text-neutral-400 group-hover:text-black transition-colors" />
+            </Link>
+            
+            <Link 
+              to="/policies?tab=shipping" 
+              onClick={onClose} 
+              className="w-full py-3.5 px-4 border border-neutral-200 hover:border-black transition-colors flex items-center justify-between text-xs font-bold uppercase tracking-widest text-black group"
+            >
+              <span className="flex items-center gap-3">
+                <ShieldCheck size={16} strokeWidth={1.5} /> Shipping & Returns
+              </span>
+              <ArrowRight size={16} className="text-neutral-400 group-hover:text-black transition-colors" />
+            </Link>
           </div>
 
-          <div className="p-3 border border-neutral-200 bg-neutral-50 text-[11px] space-y-1 text-neutral-600">
-            <div className="flex items-center gap-1 font-bold text-black">
-              <Shield size={13} /> ANONYMOUS SESSIONS
-            </div>
-            <p>
-              Client records are bound to cryptographic identifiers. No marketing tracking or profiling algorithms are deployed.
-            </p>
+          {/* Security / Privacy Note */}
+          <div className="pt-4 border-t border-neutral-200 text-[9px] text-neutral-400 leading-relaxed uppercase tracking-widest text-center">
+            Secure session. Your data is encrypted and strictly used for order fulfillment. No third-party tracking.
           </div>
         </div>
 
-        <div className="mt-6 pt-4 border-t border-black flex justify-end">
-          <button
-            onClick={onClose}
-            className="px-6 py-2 border border-black text-black hover:bg-black hover:text-white transition-colors uppercase font-mono text-xs font-bold"
-          >
-            DISMISS
-          </button>
+        {/* Footer Action */}
+        <div className="px-6 py-4 border-t border-neutral-200 bg-neutral-50">
+           <button 
+             onClick={onClose} 
+             className="w-full py-4 bg-black text-white font-['Clash_Display'] font-medium text-[15px] uppercase tracking-widest hover:bg-neutral-800 transition-colors"
+           >
+             Close Account
+           </button>
         </div>
+        
       </div>
     </div>
   );

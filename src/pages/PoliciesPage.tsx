@@ -4,13 +4,13 @@ import { Shield, Truck, RefreshCw, FileText } from 'lucide-react';
 
 export const PoliciesPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentTab = searchParams.get('tab') || 'privacy';
+  const currentTab = searchParams.get('tab') || 'shipping';
 
   const tabs = [
-    { id: 'privacy', label: '01 // PRIVACY PROTOCOL', icon: Shield },
-    { id: 'shipping', label: '02 // SHIPPING & DUTIES', icon: Truck },
-    { id: 'returns', label: '03 // RETURNS & EXCHANGES', icon: RefreshCw },
-    { id: 'terms', label: '04 // TERMS OF ARCHIVE', icon: FileText }
+    { id: 'shipping', label: 'Shipping Info', icon: Truck },
+    { id: 'returns', label: 'Returns & Exchanges', icon: RefreshCw },
+    { id: 'privacy', label: 'Privacy Policy', icon: Shield },
+    { id: 'terms', label: 'Terms of Service', icon: FileText }
   ];
 
   const handleTabChange = (tabId: string) => {
@@ -18,208 +18,195 @@ export const PoliciesPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-white text-black min-h-[80vh] select-none py-12 px-4 md:px-8">
-      <div className="max-w-4xl mx-auto space-y-10">
+    <div className="w-full bg-[#FFFFFF] text-[#000000] min-h-[80vh] select-none py-12 px-4 md:px-8">
+      <div className="max-w-[900px] mx-auto space-y-10">
+        
         {/* Header */}
-        <div className="border-b border-black pb-6 space-y-2">
-          <div className="text-xs font-mono text-neutral-500 uppercase tracking-widest">
-            REGULATORY FRAMEWORK // ATELIER COMPLIANCE
+        <div className="border-b border-neutral-200 pb-8 space-y-3 text-center sm:text-left">
+          <div className="text-[10px] font-['JetBrains_Mono'] font-bold text-neutral-500 uppercase tracking-widest">
+            Help Center & Legal
           </div>
-          <h1 className="font-heading text-4xl sm:text-5xl font-extrabold tracking-tight">
-            LEGAL PROTOCOLS &amp; POLICIES
+          <h1 className="font-['Clash_Display'] text-4xl sm:text-5xl font-semibold tracking-tight uppercase">
+            Policies & Protocols
           </h1>
-          <p className="font-mono text-xs text-neutral-600 max-w-xl">
-            Uncompromising terms governing client privacy, cryptographic anonymity, indian express
-            freight, and archival returns.
+          <p className="font-['JetBrains_Mono'] text-xs text-neutral-500 max-w-xl mx-auto sm:mx-0 leading-relaxed">
+            Everything you need to know about dispatch timelines, our 7-day return policy, and how we protect your data.
           </p>
         </div>
 
-        {/* Tab Switcher Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 border border-black divide-x divide-y sm:divide-y-0 divide-black font-mono text-xs">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = currentTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleTabChange(tab.id)}
-                className={`p-3.5 flex flex-col items-center justify-center gap-1.5 transition-colors uppercase font-bold text-center ${
-                  isActive
-                    ? 'bg-black text-white'
-                    : 'bg-white text-black hover:bg-neutral-100'
-                }`}
-              >
-                <Icon size={16} />
-                <span className="text-[11px]">{tab.label}</span>
-              </button>
-            );
-          })}
+        {/* Tab Switcher */}
+        <div className="flex overflow-x-auto scrollbar-none border-b border-neutral-200">
+          <div className="flex min-w-max w-full">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = currentTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabChange(tab.id)}
+                  className={`flex-1 py-4 px-4 flex items-center justify-center gap-2 transition-all font-['JetBrains_Mono'] text-xs font-bold uppercase tracking-widest relative ${
+                    isActive
+                      ? 'text-black'
+                      : 'text-neutral-400 hover:text-black hover:bg-neutral-50'
+                  }`}
+                >
+                  <Icon size={16} strokeWidth={isActive ? 2 : 1.5} />
+                  <span className="hidden sm:inline whitespace-nowrap">{tab.label}</span>
+                  
+                  {/* Active Indicator Line */}
+                  {isActive && (
+                    <div className="absolute bottom-0 left-0 w-full h-[2px] bg-black"></div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Tab Content Panels */}
-        <div className="border border-black p-6 sm:p-10 font-mono text-xs space-y-8 bg-white">
-          {/* TAB 1: PRIVACY */}
-          {currentTab === 'privacy' && (
-            <div className="space-y-6">
-              <div className="border-b border-black pb-4">
-                <span className="text-[10px] text-neutral-500 uppercase tracking-wider block mb-1">
-                  POLICY SECTION 01
-                </span>
-                <h2 className="font-heading text-2xl font-bold">CLIENT PRIVACY &amp; ANONYMITY</h2>
-                <span className="text-neutral-500 text-[11px]">REVISION: 2026.09.1</span>
-              </div>
-
-              <div className="space-y-4 text-neutral-800 leading-relaxed">
-                <h3 className="font-bold text-black uppercase">1. PRINCIPLE OF RADICAL DATA MINIMALISM</h3>
-                <p>
-                  ANON collects only the essential telemetry required to dispatch physical garments to
-                  your designated geographic address and securely process bank card settlements. We reject
-                  third-party ad retargeting pixels, behavioral tracking scripts, and cross-site profiling cookies.
-                </p>
-
-                <h3 className="font-bold text-black uppercase pt-2">2. ORDER TRANSMISSION &amp; BACKEND DISPATCH</h3>
-                <p>
-                  When you initiate checkout, your garment selections, delivery coordinates, and email
-                  address are encrypted via TLS 1.3 and transmitted to our dedicated order processing engine
-                  at <code className="bg-neutral-100 px-1 border border-neutral-300">https://anon-backend-chi.vercel.app/api/order</code>.
-                  This server initiates automated logistics fulfillment and sends a direct digital waybill
-                  to your specified inbox.
-                </p>
-
-                <h3 className="font-bold text-black uppercase pt-2">3. ZERO-LEASE COMMITMENT</h3>
-                <p>
-                  Under no circumstance will customer identifiers, order histories, or physical street
-                  addresses be leased, traded, or transferred to marketing consortiums. Your identity remains
-                  anonymous within our archival records.
-                </p>
-
-                <h3 className="font-bold text-black uppercase pt-2">4. RIGHT TO IRREVOCABLE ERASURE</h3>
-                <p>
-                  Clients may request complete eradication of past shipment records upon confirmed delivery
-                  of merchandise by contacting <span className="font-bold text-black">dispatch@anon-archive.com</span> with
-                  their Order Waybill ID.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 2: SHIPPING */}
+        <div className="p-2 sm:p-6 font-['JetBrains_Mono'] text-xs space-y-8 bg-white min-h-[400px]">
+          
+          {/* TAB 1: SHIPPING */}
           {currentTab === 'shipping' && (
-            <div className="space-y-6">
-              <div className="border-b border-black pb-4">
-                <span className="text-[10px] text-neutral-500 uppercase tracking-wider block mb-1">
-                  POLICY SECTION 02
-                </span>
-                <h2 className="font-heading text-2xl font-bold">SHIPPING &amp; CUSTOMS PROTOCOLS</h2>
-                <span className="text-neutral-500 text-[11px]">INDIAN CARRIER COURIER SERVICES</span>
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="space-y-2">
+                <h2 className="font-['Clash_Display'] text-2xl font-semibold uppercase tracking-wide">Shipping & Dispatch</h2>
+                <span className="text-neutral-400 text-[10px] uppercase tracking-widest">Updated: September 2026</span>
               </div>
 
-              <div className="space-y-4 text-neutral-800 leading-relaxed">
-                <h3 className="font-bold text-black uppercase">1. DISPATCH ORIGIN &amp; SCHEDULE</h3>
-                <p>
-                  All garments are hand-checked, vacuum-sealed in nitrogen foil pouches, and dispatched from
-                  either our Tokyo or Milan ateliers within 24 to 48 hours following allocation verification.
-                </p>
-
-                <h3 className="font-bold text-black uppercase pt-2">2. CARRIER TIERS &amp; TRANSIT ESTIMATES</h3>
-                <div className="border border-black divide-y divide-black my-3">
-                  <div className="p-3 bg-neutral-50 flex justify-between font-bold text-black">
-                    <span>DESTINATION REGION</span>
-                    <span>CARRIER &amp; ESTIMATED WINDOW</span>
-                  </div>
-                  <div className="p-3 flex justify-between">
-                    <span>JAPAN &amp; ASIA PACIFIC</span>
-                    <span>DHL EXPRESS PRIORITY (1-2 BUSINESS DAYS)</span>
-                  </div>
-                  <div className="p-3 flex justify-between">
-                    <span>NORTH AMERICA</span>
-                    <span>DHL EXPRESS AIR FREIGHT (2-4 BUSINESS DAYS)</span>
-                  </div>
-                  <div className="p-3 flex justify-between">
-                    <span>EUROPEAN UNION &amp; UK</span>
-                    <span>DHL / FEDEX PRIORITY AIR (2-4 BUSINESS DAYS)</span>
-                  </div>
-                  <div className="p-3 flex justify-between">
-                    <span>REST OF WORLD</span>
-                    <span>INTERNATIONAL EXPRESS (3-6 BUSINESS DAYS)</span>
-                  </div>
+              <div className="space-y-6 text-neutral-600 leading-relaxed">
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">1. Dispatch Timelines</h3>
+                  <p>
+                    All orders are processed and handed over to our delivery partners within 24 hours of confirmation. You will receive a tracking link via email as soon as your order leaves our warehouse.
+                  </p>
                 </div>
 
-                <h3 className="font-bold text-black uppercase pt-2">3. DUTIES &amp; ATELIER TAXES</h3>
-                <p>
-                  All shipments are dispatched on a DDP (Delivered Duty Paid) basis whenever possible. Import
-                  duties and local value-added taxes are calculated at checkout, eliminating unexpected custom
-                  brokerage fees at the door.
-                </p>
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">2. Free Express Shipping</h3>
+                  <p>
+                    We offer <span className="font-bold text-black">FREE Express Shipping</span> on all prepaid orders across India with a cart value of ₹3000 or above. For orders below ₹3000, a standard shipping fee of ₹100 applies.
+                  </p>
+                </div>
+
+                <div className="border border-neutral-200 mt-4">
+                  <div className="bg-neutral-50 p-3 border-b border-neutral-200 flex justify-between font-bold text-black text-[10px] uppercase tracking-widest">
+                    <span>Delivery Region</span>
+                    <span>Estimated Transit Time</span>
+                  </div>
+                  <div className="p-3 flex justify-between border-b border-neutral-100">
+                    <span>Metro Cities (India)</span>
+                    <span>1-3 Business Days</span>
+                  </div>
+                  <div className="p-3 flex justify-between border-b border-neutral-100">
+                    <span>Rest of India</span>
+                    <span>3-5 Business Days</span>
+                  </div>
+                  <div className="p-3 flex justify-between text-neutral-400">
+                    <span>International Orders</span>
+                    <span>Currently Unavailable</span>
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
-          {/* TAB 3: RETURNS */}
+          {/* TAB 2: RETURNS */}
           {currentTab === 'returns' && (
-            <div className="space-y-6">
-              <div className="border-b border-black pb-4">
-                <span className="text-[10px] text-neutral-500 uppercase tracking-wider block mb-1">
-                  POLICY SECTION 03
-                </span>
-                <h2 className="font-heading text-2xl font-bold">RETURNS &amp; EXCHANGES PROTOCOL</h2>
-                <span className="text-neutral-500 text-[11px]">14-DAY ARCHIVAL EVALUATION WINDOW</span>
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="space-y-2">
+                <h2 className="font-['Clash_Display'] text-2xl font-semibold uppercase tracking-wide">Returns & Exchanges</h2>
+                <span className="text-neutral-400 text-[10px] uppercase tracking-widest">7-Day Hassle Free Policy</span>
               </div>
 
-              <div className="space-y-4 text-neutral-800 leading-relaxed">
-                <h3 className="font-bold text-black uppercase">1. ELIGIBILITY CONDITIONS</h3>
-                <p>
-                  We accept returns for store allocation or size exchange within 14 calendar days from the
-                  confirmed carrier delivery timestamp. Garments must remain unwashed, unworn, and encased
-                  in their original numbered vacuum seal sleeve with all archival identification tags intact.
-                </p>
+              <div className="space-y-6 text-neutral-600 leading-relaxed">
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">1. Eligibility Conditions</h3>
+                  <p>
+                    We accept returns and size exchanges within <span className="font-bold text-black">7 calendar days</span> from the date of delivery. Garments must remain unwashed, unworn, and in their original packaging with all tags intact.
+                  </p>
+                </div>
 
-                <h3 className="font-bold text-black uppercase pt-2">2. NON-RETURNABLE SPECIAL EDITIONS</h3>
-                <p>
-                  Limited small-batch prototypes marked as &quot;FINAL ARCHIVE RUN&quot; are non-returnable unless
-                  arriving with verified structural manufacturing flaws.
-                </p>
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">2. Non-Returnable Items</h3>
+                  <p>
+                    Limited edition drops marked as "FINAL SALE", accessories, and innerwear are strictly non-returnable unless they arrive with a verified manufacturing defect.
+                  </p>
+                </div>
 
-                <h3 className="font-bold text-black uppercase pt-2">3. RETURN PROCESS INITIATION</h3>
-                <p>
-                  To request a return authorization waybill:
-                </p>
-                <ol className="list-decimal pl-5 space-y-1 text-neutral-700">
-                  <li>Navigate to the <span className="font-bold text-black">/track</span> portal and enter your Order ID.</li>
-                  <li>Click &quot;INITIATE RETURN WAYBILL&quot; or email returns@anon-archive.com.</li>
-                  <li>Securely re-seal the garment in its original protective packaging.</li>
-                  <li>Affix the generated prepaid return air waybill and schedule courier pickup.</li>
-                </ol>
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">3. How to Initiate a Return</h3>
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>Navigate to the <span className="font-bold text-black">Track Order</span> page.</li>
+                    <li>Enter your Order ID and select "Initiate Return / Exchange".</li>
+                    <li>Pack the garment securely in its original box.</li>
+                    <li>Our courier partner will pick up the package within 24-48 hours.</li>
+                  </ul>
+                  <p className="mt-3">Once the item reaches our warehouse and passes quality check, your refund or exchange will be processed within 3 business days.</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: PRIVACY */}
+          {currentTab === 'privacy' && (
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="space-y-2">
+                <h2 className="font-['Clash_Display'] text-2xl font-semibold uppercase tracking-wide">Privacy Policy</h2>
+                <span className="text-neutral-400 text-[10px] uppercase tracking-widest">Strict Data Protection</span>
+              </div>
+
+              <div className="space-y-6 text-neutral-600 leading-relaxed">
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">1. Data Collection Minimalism</h3>
+                  <p>
+                    ANON collects only the essential details required to process and deliver your physical garments (Name, Shipping Address, Contact Info). We do not sell, lease, or trade your data to third-party marketing consortiums.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">2. Secure Transactions</h3>
+                  <p>
+                    All payment processing is handled via encrypted TLS 1.3 banking gateways. We do not store your credit card or bank details on our servers at any point.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">3. Right to Erasure</h3>
+                  <p>
+                    You maintain full control over your digital footprint. To request complete deletion of your account and past shipment records, contact <span className="font-bold text-black">support@anon-archive.com</span>.
+                  </p>
+                </div>
               </div>
             </div>
           )}
 
           {/* TAB 4: TERMS */}
           {currentTab === 'terms' && (
-            <div className="space-y-6">
-              <div className="border-b border-black pb-4">
-                <span className="text-[10px] text-neutral-500 uppercase tracking-wider block mb-1">
-                  POLICY SECTION 04
-                </span>
-                <h2 className="font-heading text-2xl font-bold">TERMS OF ARCHIVE MEMBERSHIP</h2>
-                <span className="text-neutral-500 text-[11px]">GOVERNING JURISDICTION &amp; RULES</span>
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="space-y-2">
+                <h2 className="font-['Clash_Display'] text-2xl font-semibold uppercase tracking-wide">Terms of Service</h2>
+                <span className="text-neutral-400 text-[10px] uppercase tracking-widest">Governing Rules</span>
               </div>
 
-              <div className="space-y-4 text-neutral-800 leading-relaxed">
-                <h3 className="font-bold text-black uppercase">1. LIMITATION ON RESALE BOTS</h3>
-                <p>
-                  ANON reserves the unilateral right to cancel automated bot allocations, suspicious duplicate
-                  card orders, or volume stockpiling intended for unauthorized secondary speculative markets.
-                </p>
+              <div className="space-y-6 text-neutral-600 leading-relaxed">
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">1. Anti-Bot & Resale Limitation</h3>
+                  <p>
+                    To ensure fair access to our limited drops, ANON reserves the right to unilaterally cancel automated bot allocations, suspicious duplicate orders, or volume stockpiling intended for unauthorized secondary resale markets.
+                  </p>
+                </div>
 
-                <h3 className="font-bold text-black uppercase pt-2">2. INTELLECTUAL PROPERTY</h3>
-                <p>
-                  All architectural garment patterns, laser tag inscriptions, and brutalist digital assets
-                  are the exclusive intellectual property of ANON STUDIO LTD.
-                </p>
+                <div>
+                  <h3 className="font-bold text-black uppercase mb-2">2. Intellectual Property</h3>
+                  <p>
+                    All architectural garment patterns, imagery, logos, and digital assets on this site are the exclusive intellectual property of ANON APPAREL CO. Unauthorized reproduction is prohibited.
+                  </p>
+                </div>
               </div>
             </div>
           )}
+
         </div>
       </div>
     </div>

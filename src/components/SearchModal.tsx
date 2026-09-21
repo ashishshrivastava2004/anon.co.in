@@ -31,85 +31,100 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 flex items-start justify-center p-4 sm:p-6 pt-20">
-      <div className="w-full max-w-2xl bg-white border border-black p-6 select-none shadow-none">
-        <div className="flex items-center justify-between border-b border-black pb-4 mb-6">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 bg-black inline-block"></span>
-            <h2 className="font-heading text-xl font-bold tracking-tight">SEARCH ARCHIVE</h2>
-          </div>
+    <div className="fixed inset-0 z-50 overflow-y-auto flex items-start justify-center p-4 sm:p-6 pt-16 sm:pt-24 select-none">
+      
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+        onClick={onClose} 
+      />
+
+      {/* Modal Container */}
+      <div className="relative w-full max-w-2xl bg-white shadow-2xl animate-in zoom-in-95 slide-in-from-top-4 duration-300 flex flex-col">
+        
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-200 bg-white">
+          <h2 className="font-['Clash_Display'] text-2xl font-semibold tracking-tight uppercase text-black">
+            Search
+          </h2>
           <button
             onClick={onClose}
-            className="p-1 border border-black hover:bg-black hover:text-white transition-colors"
+            className="p-2 -mr-2 text-neutral-500 hover:text-black hover:bg-neutral-100 rounded-full transition-colors"
           >
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
         {/* Input Field */}
-        <div className="flex border border-black mb-6">
-          <div className="p-3 bg-neutral-100 border-r border-black flex items-center justify-center">
-            <Search size={18} />
-          </div>
+        <div className="flex items-center px-6 py-4 border-b border-neutral-200 focus-within:border-black transition-colors group bg-white">
+          <Search size={22} strokeWidth={1.5} className="text-neutral-400 group-focus-within:text-black transition-colors" />
           <input
             type="text"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="TYPE SKU, SILHOUETTE, HOODIE, CARGO, JACKET..."
-            className="flex-1 px-4 py-3 font-mono text-xs bg-white text-black outline-none tracking-wider"
+            placeholder="Search silhouettes, categories, or SKU..."
+            className="flex-1 px-4 py-2 font-['JetBrains_Mono'] text-[14px] bg-transparent text-black outline-none placeholder:text-neutral-400"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="px-3 hover:text-neutral-500 font-mono text-xs"
+              className="text-[10px] font-['JetBrains_Mono'] font-bold uppercase tracking-widest text-neutral-400 hover:text-black transition-colors"
             >
-              CLEAR
+              Clear
             </button>
           )}
         </div>
 
         {/* Search Results */}
-        <div className="space-y-3 max-h-96 overflow-y-auto font-mono text-xs">
-          <div className="text-[10px] text-neutral-500 uppercase tracking-widest border-b border-neutral-200 pb-1 flex justify-between">
-            <span>RESULTS FOUND: [{filtered.length}]</span>
-            <span>PRESS ITEM TO INSPECT</span>
+        <div className="max-h-[60vh] overflow-y-auto scrollbar-thin bg-neutral-50">
+          
+          <div className="px-6 py-3 text-[10px] font-['JetBrains_Mono'] font-bold text-neutral-500 uppercase tracking-widest border-b border-neutral-200 flex justify-between bg-neutral-50 sticky top-0 z-10">
+            <span>Results: {filtered.length}</span>
+            <span className="hidden sm:inline">Press item to inspect</span>
           </div>
 
           {filtered.length === 0 ? (
-            <div className="py-10 text-center text-neutral-500">
-              NO MATCHING GARMENTS FOUND FOR &quot;{query}&quot;
+            <div className="py-16 text-center font-['JetBrains_Mono'] text-neutral-500 text-[11px] uppercase tracking-widest flex flex-col items-center gap-3">
+              <Search size={32} strokeWidth={1} className="text-neutral-300" />
+              <span>No matching garments found for &quot;{query}&quot;</span>
             </div>
           ) : (
-            filtered.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => handleSelectProduct(item.id)}
-                className="border border-black p-3 flex items-center justify-between hover:bg-neutral-100 cursor-pointer transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={item.images[0]}
-                    alt={item.name}
-                    className="w-12 h-14 object-cover border border-black"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div>
-                    <div className="font-heading font-bold text-sm text-black">{item.name}</div>
-                    <div className="text-[11px] text-neutral-500 mt-0.5">
-                      CODE: {item.code} // CAT: {item.category}
+            <div className="flex flex-col">
+              {filtered.map((item) => (
+                <div
+                  key={item.id}
+                  onClick={() => handleSelectProduct(item.id)}
+                  className="px-6 py-4 flex items-center justify-between border-b border-neutral-200 hover:bg-white cursor-pointer transition-colors group"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 aspect-[3/4] bg-neutral-100 overflow-hidden border border-neutral-200 shrink-0">
+                      <img
+                        src={item.images[0]}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <div className="font-['Clash_Display'] font-medium text-[15px] uppercase text-black leading-tight mb-1">
+                        {item.name}
+                      </div>
+                      <div className="font-['JetBrains_Mono'] text-[11px] text-neutral-500 uppercase tracking-wider">
+                        SKU: {item.code} <span className="text-neutral-300 mx-1">|</span> {item.category}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-4">
-                  <span className="font-bold text-sm">₹{item.price} INR</span>
-                  <div className="p-1 border border-black hover:bg-black hover:text-white">
-                    <ArrowRight size={14} />
+                  <div className="flex items-center gap-4">
+                    <span className="font-['JetBrains_Mono'] font-bold text-[13px] text-black">
+                      ₹{item.price}
+                    </span>
+                    <ArrowRight size={16} className="text-neutral-300 group-hover:text-black transition-colors hidden sm:block" />
                   </div>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
       </div>

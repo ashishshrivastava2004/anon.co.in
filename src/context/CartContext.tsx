@@ -107,6 +107,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = items.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+  
+  // Calculate final total based on our new Free Shipping threshold (₹3000)
+  const finalTotal = subtotal >= 3000 ? subtotal : subtotal + 100; // Added 100 INR shipping if below 3k
 
   /**
    * CRITICAL BACKEND INTEGRATION:
@@ -132,7 +135,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         image: item.product.images?.[0] || ""
       })),
       customer,
-      totalAmount: subtotal,
+      totalAmount: finalTotal,
       currency: 'INR',
       timestamp: new Date().toISOString()
     };
@@ -149,13 +152,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           orderId: generatedOrderId,
           items: payload.cart,
           customerDetails: customer,
-          total: subtotal,
+          total: finalTotal, // Updated to use finalTotal
           
           cartItems: payload.cart, 
           customerName: customer.fullName,
           customerEmail: customer.email,
           address: `${customer.streetAddress}, ${customer.city}, ${customer.postalCode}, ${customer.country}`,
-          totalAmount: subtotal,
+          totalAmount: finalTotal, // Updated to use finalTotal
           paymentMode: "CASH ON DELIVERY"
         })
       });
@@ -177,20 +180,20 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const confirmedId = responseData?.orderId || responseData?.id || generatedOrderId;
 
-      saveLocalOrder(confirmedId, customer, items, subtotal);
+      saveLocalOrder(confirmedId, customer, items, finalTotal);
 
       setLastConfirmedOrder({
         orderId: confirmedId,
         customer,
         items: [...items],
-        total: subtotal
+        total: finalTotal
       });
 
       clearCart();
       return {
         success: true,
         orderId: confirmedId,
-        message: 'Order placed successfully. Archival dispatch dispatched.',
+        message: 'Order placed successfully. Details sent to your email.',
         data: responseData
       };
     } catch (err: any) {
@@ -247,8 +250,8 @@ function saveLocalOrder(orderId: string, customer: CustomerDetails, items: CartI
       email: customer.email,
       createdAt: new Date().toLocaleString('en-US', { timeZoneName: 'short' }),
       status: 'PROCESSING',
-      carrier: 'DHL Express  Indian Archival',
-      trackingNumber: `DHL-EX-${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+      carrier: 'Premium Express Logistics',
+      trackingNumber: `EXP-${Math.floor(1000000000 + Math.random() * 9000000000)}`,
       estimatedDelivery: '3-5 BUSINESS DAYS',
       shippingAddress: `${customer.streetAddress}, ${customer.city}, ${customer.postalCode}, ${customer.country}`,
       totalAmount: total,
@@ -264,22 +267,22 @@ function saveLocalOrder(orderId: string, customer: CustomerDetails, items: CartI
         {
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           date: 'TODAY',
-          location: 'ANON ATELIER - GLOBAL DISPATCH',
-          status: 'ORDER ALLOCATED // CONFIRMATION SENT',
+          location: 'ANON HQ',
+          status: 'ORDER CONFIRMED & ALLOCATED',
           completed: true
         },
         {
           time: 'EST',
           date: 'TOMORROW',
-          location: 'SECURITY INSPECTION & PACKING',
-          status: 'SEALED IN ARCHIVAL VACUUM POUCH',
+          location: 'QUALITY CHECK & PACKING',
+          status: 'PREPARING FOR DISPATCH',
           completed: false
         },
         {
           time: 'EST',
           date: 'NEXT DAY',
-          location: 'DHL LOGISTICS HUB',
-          status: 'SCHEDULED FREIGHT HANDOFF',
+          location: 'LOGISTICS HUB',
+          status: 'SHIPPED VIA EXPRESS',
           completed: false
         }
       ]

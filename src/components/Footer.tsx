@@ -15,132 +15,126 @@ export const Footer: React.FC = () => {
     }
   };
 
+  // Ticker content for flawless infinite loop
+  const TickerContent = () => (
+    <>
+      {[...Array(4)].map((_, i) => (
+        <React.Fragment key={i}>
+          <span className="mx-6">🔥 NO SECOND THOUGHT</span>
+          <span className="mx-6">•</span>
+          <span className="mx-6">PREMIUM HEAVYWEIGHT STREETWEAR</span>
+          <span className="mx-6">•</span>
+          <span className="mx-6">NEXT-DAY DISPATCH</span>
+          <span className="mx-6">•</span>
+        </React.Fragment>
+      ))}
+    </>
+  );
+
   return (
-    <footer className="w-full bg-white text-black border-t border-black select-none mt-auto">
-      {/* Top Banner Ticker */}
-      <div className="border-b border-black py-2.5 overflow-hidden bg-white">
-        <div className="animate-marquee whitespace-nowrap text-xs font-mono tracking-widest text-black flex items-center">
-          <span className="mx-6">★ ANON ARCHIVAL RESEARCH LAB</span>
-          <span className="mx-6">SYSTEM_01 ACTIVE</span>
-          <span className="mx-6">LIMITED SMALL BATCH RUNS ONLY</span>
-          <span className="mx-6">580 GSM JAPANESE COTTON TERRY</span>
-          <span className="mx-6">INDIAN EXPRESS COURIER</span>
-          <span className="mx-6">★ ANON ARCHIVAL RESEARCH LAB</span>
-          <span className="mx-6">SYSTEM_01 ACTIVE</span>
-          <span className="mx-6">LIMITED SMALL BATCH RUNS ONLY</span>
-          <span className="mx-6">580 GSM JAPANESE COTTON TERRY</span>
-          <span className="mx-6">INDIAN EXPRESS COURIER</span>
+    <footer className="w-full bg-[#FFFFFF] text-[#000000] border-t border-neutral-200 select-none mt-auto">
+      
+      {/* Top Banner Ticker (Flawless Loop) */}
+      <div className="w-full bg-black text-white py-3 flex overflow-hidden whitespace-nowrap">
+        <div className="flex shrink-0 animate-marquee items-center font-['JetBrains_Mono'] text-[10px] font-bold tracking-widest uppercase">
+          <TickerContent />
+        </div>
+        <div className="flex shrink-0 animate-marquee items-center font-['JetBrains_Mono'] text-[10px] font-bold tracking-widest uppercase" aria-hidden="true">
+          <TickerContent />
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-14 grid grid-cols-1 md:grid-cols-12 gap-12">
-        {/* Col 1: Brand & Manifesto (5 cols) */}
-        <div className="md:col-span-5 space-y-6">
-          <div className="space-y-2">
-            <span className="font-heading text-4xl font-extrabold tracking-tighter text-black block">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-16 grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8">
+        
+        {/* Col 1: Brand & Identity */}
+        <div className="md:col-span-4 space-y-6">
+          <Link to="/" className="block">
+            <span className="font-['Clash_Display'] text-5xl font-semibold tracking-tighter text-black uppercase">
               ANON
             </span>
-            <span className="text-xs font-mono text-neutral-600 block tracking-wider">
-              ARCHIVAL RESEARCH // GARMENT ARCHITECTURE
-            </span>
-          </div>
-
-          <p className="font-mono text-xs text-neutral-700 leading-relaxed max-w-sm">
-            Constructing uncompromising brutalist silhouettes through heavy textile weights,
-            functional modularity, and minimalist restraint. Founded on the principle of permanent
-            garment utility.
+          </Link>
+          <p className="font-['JetBrains_Mono'] text-xs text-neutral-500 leading-relaxed max-w-sm">
+            Heavyweight streetwear engineered for the archives. Boxy fits, premium fabrics, and unyielding aesthetics.
           </p>
-
-          <div className="font-mono text-[11px] text-neutral-500 space-y-1">
-            <div>ATELIER COORDINATES: 35.6580° N, 139.7016° E</div>
-            <div>STATUS: DROP 1 SOON // INDIA DISPATCH</div>
+          <div className="font-['JetBrains_Mono'] text-[10px] text-neutral-400 font-bold uppercase tracking-widest space-y-1">
+            <div>HQ: INDIA</div>
+            <div>STATUS: FW26 DROP 01 LIVE</div>
           </div>
         </div>
 
-        {/* Col 2: Navigation Links (3 cols) */}
-        <div className="md:col-span-3 space-y-4 font-mono text-xs">
-          <div className="font-bold tracking-widest uppercase border-b border-black pb-2 text-black">
-            DIRECTORY
+        {/* Col 2: Navigation Links (Split into 2 sub-columns) */}
+        <div className="md:col-span-4 grid grid-cols-2 gap-8 font-['JetBrains_Mono'] text-xs">
+          <div className="space-y-4">
+            <div className="font-bold tracking-widest uppercase text-black mb-4">
+              Shop
+            </div>
+            <ul className="space-y-3 text-neutral-500">
+              <li><Link to="/" className="hover:text-black transition-colors uppercase">Latest Drop</Link></li>
+              <li><Link to="/" className="hover:text-black transition-colors uppercase">All Products</Link></li>
+              <li><Link to="/track" className="hover:text-black transition-colors uppercase">Track Order</Link></li>
+            </ul>
           </div>
-          <ul className="space-y-2.5 text-neutral-700">
-            <li>
-              <Link to="/" className="hover:text-black hover:underline block">
-                &gt; ARCHIVE CATALOG
-              </Link>
-            </li>
-            <li>
-              <Link to="/track" className="hover:text-black hover:underline block">
-                &gt; ORDER DISPATCH TRACKING
-              </Link>
-            </li>
-            <li>
-              <Link to="/policies?tab=shipping" className="hover:text-black hover:underline block">
-                &gt; SHIPPING &amp; CUSTOMS
-              </Link>
-            </li>
-            <li>
-              <Link to="/policies?tab=returns" className="hover:text-black hover:underline block">
-                &gt; RETURNS &amp; REPLACEMENTS
-              </Link>
-            </li>
-            <li>
-              <Link to="/policies?tab=privacy" className="hover:text-black hover:underline block">
-                &gt; DATA &amp; PRIVACY POLICY
-              </Link>
-            </li>
-          </ul>
+          <div className="space-y-4">
+            <div className="font-bold tracking-widest uppercase text-black mb-4">
+              Support
+            </div>
+            <ul className="space-y-3 text-neutral-500">
+              <li><Link to="/policies?tab=shipping" className="hover:text-black transition-colors uppercase">Shipping Info</Link></li>
+              <li><Link to="/policies?tab=returns" className="hover:text-black transition-colors uppercase">Returns & Exchanges</Link></li>
+              <li><Link to="/policies?tab=privacy" className="hover:text-black transition-colors uppercase">Privacy Policy</Link></li>
+            </ul>
+          </div>
         </div>
 
-        {/* Col 3: Newsletter & Dispatch Alerts (4 cols) */}
-        <div className="md:col-span-4 space-y-4 font-mono text-xs">
-          <div className="font-bold tracking-widest uppercase border-b border-black pb-2 text-black">
-            ARCHIVAL DISPATCH NOTICES
+        {/* Col 3: Newsletter & Socials */}
+        <div className="md:col-span-4 space-y-6 font-['JetBrains_Mono']">
+          <div>
+            <div className="font-bold tracking-widest uppercase text-black mb-2 text-xs">
+              Unlock Early Access
+            </div>
+            <p className="text-neutral-500 text-[11px] leading-relaxed mb-4">
+              Join the club for exclusive drops, private restocks, and early access to FW26.
+            </p>
           </div>
-          <p className="text-neutral-600 text-xs leading-relaxed">
-            Receive encrypted cryptographic drops, private restock codes, and atelier production logs.
-          </p>
 
           {subscribed ? (
-            <div className="border border-black bg-black text-white p-3 flex items-center gap-2">
+            <div className="border border-black bg-black text-white p-3 text-[11px] flex items-center gap-2 font-bold tracking-widest uppercase animate-in fade-in">
               <Check size={16} />
-              <span>EMAIL TRANSMITTED. CLIENT RECORD CREATED.</span>
+              <span>You're on the list.</span>
             </div>
           ) : (
             <form onSubmit={handleNewsletterSubmit} className="space-y-2">
-              <div className="flex border border-black">
+              <div className="flex border border-neutral-300 focus-within:border-black transition-colors group">
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="ENTER CLIENT EMAIL"
-                  className="flex-1 px-3 py-2.5 text-xs bg-white text-black outline-none font-mono"
+                  placeholder="Enter your email"
+                  className="flex-1 px-4 py-3 text-xs bg-white text-black outline-none font-['JetBrains_Mono'] placeholder:text-neutral-400"
                 />
                 <button
                   type="submit"
-                  className="px-4 bg-black text-white hover:bg-neutral-800 transition-colors flex items-center justify-center font-bold"
-                  aria-label="Subscribe to newsletter"
+                  className="px-5 bg-black text-white hover:bg-neutral-800 transition-colors flex items-center justify-center"
+                  aria-label="Subscribe"
                 >
-                  <ArrowRight size={14} />
+                  <ArrowRight size={16} strokeWidth={1.5} />
                 </button>
-              </div>
-              <div className="text-[10px] text-neutral-500">
-                NO PROMOTIONAL SPAM. IRREVOCABLE ZERO DATA LEASE GUARANTEE.
               </div>
             </form>
           )}
 
-          <div className="pt-4 border-t border-neutral-200">
-            <div className="text-[11px] font-bold text-black mb-2">COMMUNICATION CHANNELS:</div>
-            <div className="flex flex-wrap gap-3 text-xs text-neutral-600">
-              <a href="https://www.instagram.com/anon.clo.in/" target="_blank" rel="noreferrer" className="hover:text-black underline">
-                [INSTAGRAM]
+          <div className="pt-6">
+            <div className="text-[10px] font-bold tracking-widest text-black mb-3 uppercase">Connect</div>
+            <div className="flex gap-4 text-[11px] font-bold text-neutral-500">
+              <a href="https://www.instagram.com/anon.clo.in/" target="_blank" rel="noreferrer" className="hover:text-black transition-colors uppercase">
+                Instagram
               </a>
-              <a href="https://discord.gg/vXZzdbsDf" target="_blank" rel="noreferrer" className="hover:text-black underline">
-                [DISCORD]
+              <a href="https://discord.gg/vXZzdbsDf" target="_blank" rel="noreferrer" className="hover:text-black transition-colors uppercase">
+                Discord
               </a>
-              <a href="https://x.com/anonapparelz" target="_blank" rel="noreferrer" className="hover:text-black underline">
-                [X / ARCHIVE]
+              <a href="https://x.com/anonapparelz" target="_blank" rel="noreferrer" className="hover:text-black transition-colors uppercase">
+                X (Twitter)
               </a>
             </div>
           </div>
@@ -148,15 +142,15 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Bottom Legal Baseline */}
-      <div className="border-t border-black bg-white px-4 md:px-8 py-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-neutral-600 gap-2">
+      <div className="border-t border-neutral-200 bg-neutral-50 px-4 md:px-8 py-6">
+        <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between text-[10px] font-['JetBrains_Mono'] font-bold text-neutral-400 uppercase tracking-widest gap-4 text-center sm:text-left">
           <div>
             © {new Date().getFullYear()} ANON APPAREL CO. ALL RIGHTS RESERVED.
           </div>
           <div className="flex gap-4">
-            <Link to="/policies" className="hover:text-black underline">LEGAL PROTOCOLS</Link>
-            <span>//</span>
-            <span>SYSTEM 01 PRODUCTION GRADE</span>
+            <Link to="/policies" className="hover:text-black transition-colors">Terms of Service</Link>
+            <span className="text-neutral-300">|</span>
+            <Link to="/policies?tab=privacy" className="hover:text-black transition-colors">Privacy</Link>
           </div>
         </div>
       </div>

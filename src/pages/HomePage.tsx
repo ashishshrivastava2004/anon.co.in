@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Eye, Plus, Shield, Layers, Box, Cpu } from 'lucide-react';
+import { Plus, Truck, ShieldCheck, Zap } from 'lucide-react';
 import { PRODUCTS } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { Product } from '../types';
@@ -10,7 +10,7 @@ export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
 
-  const categories = ['ALL', 'TOPS', 'BOTTOMS', 'OUTERWEAR', 'ACCESSORIES', 'FOOTWEAR'];
+  const categories = ['ALL', 'TOPS', 'BOTTOMS', 'OUTERWEAR', 'ACCESSORIES'];
 
   const filteredProducts = selectedCategory === 'ALL'
     ? PRODUCTS
@@ -21,130 +21,89 @@ export const HomePage: React.FC = () => {
     addToCart(product, product.sizes[0], 1);
   };
 
+  // Ticker content component to keep code clean and repeat it easily for a flawless loop
+  const TickerContent = () => (
+    <>
+      {[...Array(4)].map((_, i) => (
+        <React.Fragment key={i}>
+          <span className="mx-8">🔥 FW26 DROP 01 NOW LIVE</span>
+          <span className="mx-8">•</span>
+          <span className="mx-8">HEAVYWEIGHT 500 GSM COTTON</span>
+          <span className="mx-8">•</span>
+          <span className="mx-8">FREE EXPRESS SHIPPING IN INDIA</span>
+          <span className="mx-8">•</span>
+          <span className="mx-8">NO ROUNDED EDGES. NO COMPROMISE.</span>
+          <span className="mx-8">•</span>
+        </React.Fragment>
+      ))}
+    </>
+  );
+
   return (
-    <div className="w-full bg-white text-black select-none">
-      {/* 1. HERO BANNER */}
-      <section className="relative w-full border-b border-black">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 min-h-[80vh] items-stretch">
-          <div className="lg:col-span-6 p-6 sm:p-10 lg:p-14 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-black bg-white">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 border border-black text-xs font-mono bg-white">
-                <span className="w-2 h-2 bg-black inline-block animate-pulse"></span>
-                <span>UPCOMING DROP 01</span>
-              </div>
-
-              <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tighter leading-[0.95] text-black">
-                BRUTALIST<br />
-                ARCHIVAL<br />
-                STREETWEAR.
-              </h1>
-
-              <p className="font-mono text-xs sm:text-sm text-neutral-700 max-w-md pt-2 leading-relaxed">
-                Sculptural heavy textiles. Unyielding monochrome palette. Monolithic silhouettes
-                engineered for permanent anonymity in hyper-dense urban landscapes.
-              </p>
-            </div>
-
-            <div className="pt-8 space-y-4 font-mono text-xs">
-              <div className="grid grid-cols-2 gap-4 border-t border-black pt-4">
-                <div>
-                  <div className="text-[10px] text-neutral-500 uppercase tracking-widest">EDITION</div>
-                  <div className="font-bold text-sm">FW26 BATCH 01</div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-neutral-500 uppercase tracking-widest">FABRICATION</div>
-                  <div className="font-bold text-sm">580 GSM COTTON</div>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <a
-                  href="#arrivals"
-                  className="px-6 py-4 bg-black text-white border border-black hover:bg-white hover:text-black transition-colors font-mono font-bold uppercase tracking-widest flex items-center justify-between text-xs"
-                >
-                  <span>INSPECT DROP 01</span>
-                  <ArrowRight size={16} />
-                </a>
-                <Link
-                  to="/track"
-                  className="px-6 py-4 bg-white text-black border border-black hover:bg-neutral-100 transition-colors font-mono font-bold uppercase tracking-widest flex items-center justify-between text-xs"
-                >
-                  <span>TRACK SHIPMENT</span>
-                </Link>
-              </div>
-            </div>
+    <div className="w-full bg-[#FFFFFF] text-[#000000] selection:bg-black selection:text-white pb-10">
+      
+      {/* 1. HERO BANNER (Edge-to-Edge Bonkers Style) */}
+      <section className="relative w-full h-[85vh] bg-neutral-900 flex items-center justify-center overflow-hidden">
+        <img
+          src="/b_A_medium-full_studio.webp"
+          alt="ANON Drop 01"
+          className="absolute inset-0 w-full h-full object-cover object-top opacity-80"
+          referrerPolicy="no-referrer"
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
+        
+        <div className="relative z-10 flex flex-col items-center text-center text-white px-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-['JetBrains_Mono'] tracking-widest uppercase mb-6 rounded-full">
+            <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span>
+            FW26 DROP 01 IS LIVE
           </div>
-
-          <div className="lg:col-span-6 relative bg-neutral-100 overflow-hidden flex items-center justify-center group min-h-[400px]">
-            {/* Slashes fixed here! */}
-            <img
-              src="/b_A_medium-full_studio.webp"
-              alt="ANON Archival Editorial"
-              className="w-full h-full object-cover object-top"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-black/10"></div>
-
-            <div className="absolute bottom-6 left-6 right-6 border border-black bg-white/95 p-4 font-mono text-xs flex items-center justify-between backdrop-blur-none">
-              <div>
-                <span className="font-bold block text-sm">SYSTEM_01 HOODIE / HEAVYWEIGHT</span>
-                <span className="text-neutral-600 text-[11px]">SPEC: 580 GSM FRENCH TERRY // TOKYO ATELIER</span>
-              </div>
-              <button
-                onClick={() => navigate('/product/anon-hoodie-01')}
-                className="px-4 py-2 bg-black text-white text-xs hover:bg-neutral-800 transition-colors uppercase font-bold"
-              >
-                VIEW
-              </button>
-            </div>
+          
+          <h1 className="font-['Clash_Display'] text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-semibold uppercase tracking-tight leading-[0.9]">
+            NO SECOND<br />THOUGHT.
+          </h1>
+          
+          <p className="font-['JetBrains_Mono'] text-sm md:text-base mt-6 text-neutral-200 max-w-lg tracking-wide">
+            Heavyweight streetwear engineered for the archives. Boxy fits. Unyielding anonymity.
+          </p>
+          
+          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <a href="#shop" className="px-8 py-4 bg-white text-black font-['Clash_Display'] font-medium uppercase tracking-widest text-sm hover:scale-105 transition-transform duration-300">
+              SHOP THE DROP
+            </a>
           </div>
         </div>
       </section>
 
-      {/* 2. INFINITE MARQUEE TICKER */}
-      <section className="w-full border-b border-black py-3 bg-white overflow-hidden">
-        <div className="animate-marquee whitespace-nowrap font-mono text-xs font-bold tracking-widest uppercase flex items-center">
-          <span className="mx-8">[ ANON RESEARCH LAB ]</span>
-          <span className="mx-8">•</span>
-          <span className="mx-8">NO ROUNDED EDGES. NO COMPROMISE.</span>
-          <span className="mx-8">•</span>
-          <span className="mx-8">RACCAGNI HARDWARE // VENTILE CANVAS</span>
-          <span className="mx-8">•</span>
-          <span className="mx-8">DIRECT AIR FREIGHT TO ALL METROPOLITAN HUBS</span>
-          <span className="mx-8">•</span>
-          <span className="mx-8">LIMITED EDITION ARCHIVAL SYSTEM_01</span>
-          <span className="mx-8">•</span>
-          <span className="mx-8">[ ANON RESEARCH LAB ]</span>
-          <span className="mx-8">•</span>
-          <span className="mx-8">NO ROUNDED EDGES. NO COMPROMISE.</span>
-          <span className="mx-8">•</span>
-          <span className="mx-8">RACCAGNI HARDWARE // VENTILE CANVAS</span>
-          <span className="mx-8">•</span>
-          <span className="mx-8">DIRECT AIR FREIGHT TO ALL METROPOLITAN HUBS</span>
+      {/* 2. INFINITE MARQUEE TICKER (Flawless Loop Fix) */}
+      <section className="w-full bg-black text-white py-3 flex overflow-hidden whitespace-nowrap">
+        {/* First block translating left */}
+        <div className="flex shrink-0 animate-marquee items-center font-['JetBrains_Mono'] text-[11px] font-bold tracking-widest uppercase">
+          <TickerContent />
+        </div>
+        {/* Exact replica block seamlessly following the first one */}
+        <div className="flex shrink-0 animate-marquee items-center font-['JetBrains_Mono'] text-[11px] font-bold tracking-widest uppercase" aria-hidden="true">
+          <TickerContent />
         </div>
       </section>
 
-      {/* 3. NEW ARRIVALS GRID */}
-      <section id="arrivals" className="w-full max-w-7xl mx-auto px-4 md:px-8 py-14">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-black pb-6 mb-8">
-          <div>
-            <div className="text-xs font-mono text-neutral-500 uppercase tracking-widest mb-1">
-              CATALOG SELECTION
-            </div>
-            <h2 className="font-heading text-3xl md:text-4xl font-extrabold tracking-tight">
-              NEW ARRIVALS // DROP 01
-            </h2>
-          </div>
-
-          <div className="flex flex-wrap gap-2 font-mono text-xs">
+      {/* 3. NEW ARRIVALS GRID (Snitch Style Clean Grid) */}
+      <section id="shop" className="w-full max-w-[1400px] mx-auto px-4 md:px-8 py-16">
+        <div className="flex flex-col items-center mb-12">
+          <h2 className="font-['Clash_Display'] text-3xl md:text-4xl font-semibold tracking-tight uppercase mb-6">
+            LATEST DROPS
+          </h2>
+          
+          {/* Clean Pill Filters */}
+          <div className="flex flex-wrap justify-center gap-2 font-['JetBrains_Mono'] text-xs">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 border border-black transition-all duration-200 uppercase tracking-widest ${
+                className={`px-5 py-2.5 rounded-full transition-colors uppercase tracking-widest border ${
                   selectedCategory === cat
-                    ? 'bg-black text-white font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
-                    : 'bg-white text-black font-medium hover:bg-neutral-100 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
+                    ? 'bg-black text-white border-black'
+                    : 'bg-white text-neutral-500 border-neutral-200 hover:border-black hover:text-black'
                 }`}
               >
                 {cat}
@@ -153,78 +112,49 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-black divide-y md:divide-y-0 md:divide-x divide-black">
+        {/* Product Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-6 md:gap-y-10">
           {filteredProducts.map((product) => (
             <div
               key={product.id}
               onClick={() => navigate(`/product/${product.id}`)}
-              className="group bg-white flex flex-col justify-between cursor-pointer border-b border-black last:border-b-0 lg:last:border-b md:nth-[2n]:border-r-0 hover:bg-neutral-50 transition-colors"
+              className="group cursor-pointer flex flex-col"
             >
-              <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden border-b border-black">
+              {/* Image Container */}
+              <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden mb-4 border border-black/5 group-hover:border-black/20 transition-colors">
                 <img
                   src={product.images[0]}
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
-
-                <div className="absolute top-3 left-3 bg-white border border-black px-2 py-0.5 text-[10px] font-mono tracking-wider">
-                  {product.code}
-                </div>
-
-                {product.stockCount <= 4 && (
-                  <div className="absolute top-3 right-3 bg-black text-white border border-black px-2 py-0.5 text-[10px] font-mono">
-                    LOW STOCK [{product.stockCount}]
+                
+                {/* Badges */}
+                {product.stockCount <= 5 && (
+                  <div className="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 text-[9px] font-['JetBrains_Mono'] font-bold tracking-widest uppercase">
+                    SELLING FAST
                   </div>
                 )}
 
-                <div className="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                {/* Hover Quick Add (Desktop) */}
+                <div className="absolute inset-x-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-300 hidden md:block">
                   <button
                     onClick={(e) => handleQuickAdd(product, e)}
-                    className="flex-1 py-2.5 bg-black text-white border border-black font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-neutral-900"
+                    className="w-full py-3 bg-white/95 backdrop-blur text-black font-['Clash_Display'] font-medium text-sm tracking-widest uppercase hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2"
                   >
-                    <Plus size={14} /> QUICK ADD [{product.sizes[0]}]
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/product/${product.id}`);
-                    }}
-                    className="px-3 py-2.5 bg-white text-black border border-black hover:bg-neutral-100"
-                    title="View Details"
-                  >
-                    <Eye size={14} />
+                    <Plus size={16} strokeWidth={2} /> QUICK ADD
                   </button>
                 </div>
               </div>
 
-              <div className="p-5 font-mono text-xs space-y-3 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex justify-between items-start gap-2">
-                    <h3 className="font-heading font-bold text-base text-black group-hover:underline">
-                      {product.name}
-                    </h3>
-                    <span className="font-bold text-base whitespace-nowrap">
-                      ₹{product.price} INR
-                    </span>
-                  </div>
-                  <p className="text-neutral-500 text-[11px] mt-1 line-clamp-1">
-                    {product.tagline}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-neutral-200 flex items-center justify-between text-[11px]">
-                  <div className="flex gap-1.5 text-neutral-600">
-                    <span>SIZES:</span>
-                    {product.sizes.map((s) => (
-                      <span key={s} className="font-semibold text-black">
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-neutral-400 group-hover:text-black flex items-center gap-1">
-                    INSPECT <ArrowRight size={12} />
-                  </span>
+              {/* Product Info */}
+              <div className="flex flex-col items-center text-center space-y-1.5 px-2">
+                <h3 className="font-['Clash_Display'] font-medium text-[15px] uppercase tracking-wide truncate w-full text-black">
+                  {product.name}
+                </h3>
+                <div className="flex items-center gap-2 font-['JetBrains_Mono'] text-xs">
+                  <span className="font-bold text-black">₹{product.price}</span>
+                  <span className="text-neutral-400 line-through">₹{Math.round(product.price * 1.4)}</span>
                 </div>
               </div>
             </div>
@@ -232,90 +162,39 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. BRAND MANIFESTO SECTION */}
-      <section className="w-full border-t border-b border-black bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 space-y-4">
-            <div className="text-xs font-mono text-neutral-500 uppercase tracking-widest">
-              BRAND MANIFESTO // 001
+      {/* 4. BRAND USPs (Clean, Modern Trust Signals) */}
+      <section className="w-full border-t border-neutral-200 bg-neutral-50 mt-10">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-neutral-200">
+            
+            <div className="flex flex-col items-center space-y-3 pt-6 md:pt-0">
+              <Zap size={28} strokeWidth={1.5} className="text-black" />
+              <h4 className="font-['Clash_Display'] font-semibold text-lg uppercase tracking-wide">Next-Day Dispatch</h4>
+              <p className="font-['JetBrains_Mono'] text-[11px] text-neutral-500 max-w-xs leading-relaxed">
+                All orders are processed and shipped within 24 hours. Fast, tracked, and reliable delivery across India.
+              </p>
             </div>
-            <h2 className="font-heading text-4xl sm:text-5xl font-extrabold tracking-tighter leading-tight">
-              ANONYMITY AS A FORM OF RESISTANCE.
-            </h2>
-            <div className="w-12 h-1 bg-black"></div>
-          </div>
 
-          <div className="lg:col-span-7 font-mono text-xs sm:text-sm text-neutral-800 space-y-4 leading-relaxed border-l-0 lg:border-l border-black lg:pl-10">
-            <p>
-              Contemporary fashion prioritizes ephemeral seasonal trends, plastic synthetic blends,
-              and loud exterior branding that treats the wearer as an unpaid billboard.
-            </p>
-            <p>
-              ANON was initiated as a brutalist design experiment in Tokyo and Milan: to strip away
-              all superficial ornament, enforce absolute monochrome discipline, and construct
-              monolithic garments engineered from the highest-density Japanese cotton and weatherproof
-              technical membranes.
-            </p>
-            <p className="font-bold text-black pt-2">
-              WE DO NOT DESIGN FOR SEASONS. WE CONSTRUCT ARCHIVAL SILHOUETTES DESIGNED TO OUTLAST.
-            </p>
+            <div className="flex flex-col items-center space-y-3 pt-6 md:pt-0">
+              <ShieldCheck size={28} strokeWidth={1.5} className="text-black" />
+              <h4 className="font-['Clash_Display'] font-semibold text-lg uppercase tracking-wide">Premium Heavyweight</h4>
+              <p className="font-['JetBrains_Mono'] text-[11px] text-neutral-500 max-w-xs leading-relaxed">
+                Engineered with 500+ GSM pure cotton. Boxy, oversized fits designed to outlast trends.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center space-y-3 pt-6 md:pt-0">
+              <Truck size={28} strokeWidth={1.5} className="text-black" />
+              <h4 className="font-['Clash_Display'] font-semibold text-lg uppercase tracking-wide">Free Shipping & Returns</h4>
+              <p className="font-['JetBrains_Mono'] text-[11px] text-neutral-500 max-w-xs leading-relaxed">
+                Enjoy free express shipping on all prepaid orders. Hassle-free 7-day return policy.
+              </p>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* 5. ATELIER TECHNICAL SPECIFICATIONS */}
-      <section className="w-full max-w-7xl mx-auto px-4 md:px-8 py-16">
-        <div className="text-xs font-mono text-neutral-500 uppercase tracking-widest mb-2">
-          CONSTRUCTION STANDARDS
-        </div>
-        <h2 className="font-heading text-3xl font-extrabold tracking-tight mb-8">
-          ARCHIVAL GARMENT DISCIPLINE
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 border border-black divide-y md:divide-y-0 md:divide-x divide-black font-mono text-xs">
-          <div className="p-6 space-y-3 bg-white">
-            <div className="p-3 border border-black w-fit">
-              <Layers size={20} />
-            </div>
-            <h4 className="font-heading font-bold text-base">580 GSM FABRICATION</h4>
-            <p className="text-neutral-600 leading-relaxed text-xs">
-              Custom long-staple cotton looped in Wakayama on vintage circular sinker machines.
-              Double-weight density.
-            </p>
-          </div>
-
-          <div className="p-6 space-y-3 bg-white">
-            <div className="p-3 border border-black w-fit">
-              <Cpu size={20} />
-            </div>
-            <h4 className="font-heading font-bold text-base">HARDWARE INTEGRITY</h4>
-            <p className="text-neutral-600 leading-relaxed text-xs">
-              AustriAlpin Cobra buckles, German Fidlock magnets, and Italian Raccagni SuperR
-              matte-black teeth.
-            </p>
-          </div>
-
-          <div className="p-6 space-y-3 bg-white">
-            <div className="p-3 border border-black w-fit">
-              <Box size={20} />
-            </div>
-            <h4 className="font-heading font-bold text-base">VACUUM ARCHIVAL PACK</h4>
-            <p className="text-neutral-600 leading-relaxed text-xs">
-              Every dispatched piece is de-oxygenated, foil sealed, and numbered by hand in Tokyo.
-            </p>
-          </div>
-
-          <div className="p-6 space-y-3 bg-white">
-            <div className="p-3 border border-black w-fit">
-              <Shield size={20} />
-            </div>
-            <h4 className="font-heading font-bold text-base">LIFETIME SEAM SUPPORT</h4>
-            <p className="text-neutral-600 leading-relaxed text-xs">
-              All structural stress points reinforced with bar-tacks and bonded waterproof tape.
-            </p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };

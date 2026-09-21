@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import { ChevronDown, ChevronUp, ArrowLeft, Check, ShoppingBag, ShieldCheck, Truck, RefreshCw } from 'lucide-react';
+import { ChevronDown, ChevronUp, ArrowLeft, ShoppingBag, ShieldCheck, Truck, RefreshCcw, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { PRODUCTS } from '../data/products';
 import { useCart } from '../context/CartContext';
 
@@ -20,7 +20,7 @@ export const ProductDetailsPage: React.FC = () => {
 
   const [selectedSize, setSelectedSize] = useState<'S' | 'M' | 'L' | 'XL' | 'XXL'>(product.sizes[0]);
   const [quantity, setQuantity] = useState<number>(1);
-  const [activeAccordion, setActiveAccordion] = useState<string | null>('fabric');
+  const [activeAccordion, setActiveAccordion] = useState<string | null>('details');
   const [addedFeedback, setAddedFeedback] = useState(false);
   
   // States for Image Gallery Sync
@@ -37,376 +37,221 @@ export const ProductDetailsPage: React.FC = () => {
     setTimeout(() => setAddedFeedback(false), 2500);
   };
 
-  const relatedProducts = PRODUCTS.filter((p) => p.id !== product.id).slice(0, 3);
+  const relatedProducts = PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
 
   return (
-    <div className="w-full bg-white text-black select-none">
-      {/* Breadcrumb & Navigation Bar */}
-      <div className="border-b border-black px-4 md:px-8 py-3 max-w-7xl mx-auto flex items-center justify-between font-mono text-xs">
-        <Link
-          to="/"
-          className="flex items-center gap-1 hover:underline text-black font-semibold"
-        >
-          <ArrowLeft size={14} /> &lt; BACK
-        </Link>
-        <div className="text-neutral-500 hidden sm:block">
-          CATALOG // {product.category} // {product.code}
+    <div className="w-full bg-[#FFFFFF] text-[#000000] selection:bg-black selection:text-white">
+      {/* Breadcrumb & Top Bar */}
+      <div className="px-4 md:px-8 py-4 max-w-[1400px] mx-auto flex items-center justify-between border-b border-neutral-200">
+        <div className="flex items-center gap-2 text-neutral-500 font-['JetBrains_Mono'] text-[11px] uppercase tracking-wider">
+          <Link to="/" className="hover:text-black transition-colors flex items-center gap-1">
+            <ArrowLeft size={14} /> HOME
+          </Link>
+          <span>/</span>
+          <Link to="/collection" className="hover:text-black transition-colors">
+            {product.category}
+          </Link>
+          <span>/</span>
+          <span className="text-black font-semibold">{product.name}</span>
         </div>
-        <div className="text-neutral-500">
-          DISPATCH: TOMMOROW
+        <div className="hidden sm:flex items-center gap-1 font-['JetBrains_Mono'] font-semibold text-[10px] tracking-widest uppercase">
+          <Truck size={14} /> ⚡ SHIPS IN 24 HOURS
         </div>
       </div>
 
-      {/* Main Product Layout: 2 Columns with 1px black divider */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 border-b border-black">
+      {/* Main Product Layout: 2 Columns */}
+      <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 p-4 md:p-8">
+        
         {/* Left Column: Swiper.js Image Gallery (7 cols) */}
-        <div className="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-black p-4 sm:p-8 flex flex-col justify-between">
-          <div className="relative border border-black bg-neutral-100 overflow-hidden">
-            <Swiper
-              modules={[Navigation, Pagination]}
-              spaceBetween={0}
-              slidesPerView={1}
-              navigation={{
-                nextEl: '.swiper-button-next-custom',
-                prevEl: '.swiper-button-prev-custom'
-              }}
-              onSwiper={setSwiperInstance} // Save swiper instance here
-              onSlideChange={(swiper) => setActiveImageIndex(swiper.activeIndex)}
-              className="w-full aspect-[4/5]"
-            >
-              {product.images.map((imgUrl, idx) => (
-                <SwiperSlide key={idx} className="w-full h-full">
-                  <img
-                    src={imgUrl}
-                    alt={`${product.name} - view ${idx + 1}`}
-                    className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-
-            {/* Custom Sharp Brutalist Swiper Controls */}
-            <div className="absolute bottom-4 right-4 z-10 flex gap-2">
-              <button
-                className="swiper-button-prev-custom px-3 py-2 bg-white text-black border border-black hover:bg-black hover:text-white transition-colors font-mono text-xs font-bold"
-                aria-label="Previous image"
-              >
-                [PREV]
-              </button>
-              <button
-                className="swiper-button-next-custom px-3 py-2 bg-white text-black border border-black hover:bg-black hover:text-white transition-colors font-mono text-xs font-bold"
-                aria-label="Next image"
-              >
-                [NEXT]
-              </button>
-            </div>
-
-            {/* Image Counter Badge */}
-            <div className="absolute top-4 left-4 z-10 bg-black text-white px-2 py-1 font-mono text-xs border border-black">
-              FRAME {String(activeImageIndex + 1).padStart(2, '0')} / {String(product.images.length).padStart(2, '0')}
-            </div>
-          </div>
-
-          {/* Thumbnail Strip */}
-          <div className="grid grid-cols-4 gap-3 mt-4">
+        <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4">
+          {/* Desktop Thumbnail Strip */}
+          <div className="hidden md:flex flex-col gap-3 w-20 shrink-0">
             {product.images.map((img, index) => (
               <button
                 key={index}
                 onClick={() => {
                   setActiveImageIndex(index);
-                  if (swiperInstance) {
-                    swiperInstance.slideTo(index); // Move main slider to clicked thumbnail
-                  }
+                  if (swiperInstance) swiperInstance.slideTo(index);
                 }}
-                className={`border aspect-[4/5] overflow-hidden bg-neutral-100 transition-opacity ${
-                  activeImageIndex === index
-                    ? 'border-2 border-black opacity-100'
-                    : 'border-black opacity-60 hover:opacity-100'
+                className={`aspect-[3/4] overflow-hidden bg-white transition-all border ${
+                  activeImageIndex === index ? 'border-black opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
                 }`}
               >
-                <img
-                  src={img}
-                  alt="Thumbnail"
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
+                <img src={img} alt="Thumbnail" className="w-full h-full object-cover object-center" />
               </button>
             ))}
           </div>
+
+          {/* Main Image Slider (Gray Block Fixed 100%) */}
+          <div className="relative w-full group overflow-hidden border border-black/10 bg-white">
+            <Swiper
+              modules={[Navigation, Pagination]}
+              spaceBetween={0}
+              slidesPerView={1}
+              navigation={{
+                nextEl: '.swiper-next',
+                prevEl: '.swiper-prev'
+              }}
+              onSwiper={setSwiperInstance}
+              onSlideChange={(swiper) => setActiveImageIndex(swiper.activeIndex)}
+              className="w-full h-full"
+            >
+              {product.images.map((imgUrl, idx) => (
+                <SwiperSlide key={idx} className="w-full h-full bg-white">
+                  <img 
+                    src={imgUrl} 
+                    alt={`${product.name} view`} 
+                    className="w-full h-full aspect-[4/5] md:aspect-[3/4] object-cover object-center" 
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Clean Navigation Arrows */}
+            <button className="swiper-prev absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/80 backdrop-blur flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white border border-black/10">
+              <ChevronLeft size={20} strokeWidth={1.5} />
+            </button>
+            <button className="swiper-next absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/80 backdrop-blur flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white border border-black/10">
+              <ChevronRight size={20} strokeWidth={1.5} />
+            </button>
+            
+            {/* Minimal Image Counter */}
+            <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur px-2 py-1 text-[10px] font-['JetBrains_Mono'] font-bold rounded-sm border border-black/10">
+              {String(activeImageIndex + 1).padStart(2, '0')} / {String(product.images.length).padStart(2, '0')}
+            </div>
+          </div>
         </div>
 
-        {/* Right Column: Garment Specs, Size Selector, Add to Cart (5 cols) */}
-        <div className="lg:col-span-5 p-6 sm:p-10 font-mono text-xs flex flex-col justify-between space-y-8">
-          <div className="space-y-6">
-            {/* Title & Price Header */}
-            <div className="border-b border-black pb-6 space-y-2">
-              <div className="flex justify-between items-center text-[11px] text-neutral-500 tracking-wider">
-                <span>SKU: {product.code}</span>
-                <span className="text-black font-bold">● READY FOR DISPATCH</span>
+        {/* Right Column: Details & Add to Cart (5 cols) */}
+        <div className="lg:col-span-5 flex flex-col py-4 md:py-8 lg:pr-8">
+          
+          {/* Header */}
+          <div className="border-b border-black pb-6 mb-6">
+            <h1 className="font-['Clash_Display'] font-semibold text-3xl sm:text-4xl uppercase tracking-tight leading-none mb-3">
+              {product.name}
+            </h1>
+            
+            <div className="flex items-center gap-2 mb-5 font-['JetBrains_Mono'] text-xs">
+              <div className="flex text-black">
+                <Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/>
               </div>
-
-              <h1 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-black leading-tight">
-                {product.name}
-              </h1>
-
-              <div className="flex items-baseline justify-between pt-2">
-                <span className="font-heading text-2xl sm:text-3xl font-bold">
-                  ₹{product.price} {product.currency}
-                </span>
-                <span className="text-[11px] text-neutral-600">
-                  TAX &amp; ATELIER SURCHARGE INCLUDED
-                </span>
-              </div>
+              <span className="text-neutral-500 underline cursor-pointer">42 REVIEWS</span>
             </div>
 
-            {/* Garment Editorial Description */}
-            <p className="text-neutral-700 leading-relaxed text-xs sm:text-sm">
-              {product.description}
-            </p>
-
-            {/* Size Selector */}
-            <div className="space-y-3 pt-2">
-              <div className="flex justify-between items-center">
-                <span className="font-bold uppercase tracking-wider text-black">
-                  SELECT GARMENT SIZE:
-                </span>
-                <button
-                  onClick={() => toggleAccordion('fit')}
-                  className="text-neutral-500 hover:text-black underline text-[11px]"
-                >
-                  SIZE DIMENSION CHART &gt;
-                </button>
-              </div>
-
-              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
-                {product.sizes.map((sz) => (
-                  <button
-                    key={sz}
-                    onClick={() => setSelectedSize(sz)}
-                    className={`py-3 text-center border border-black font-mono text-xs font-bold transition-colors ${
-                      selectedSize === sz
-                        ? 'bg-black text-white'
-                        : 'bg-white text-black hover:bg-neutral-100'
-                    }`}
-                  >
-                    {sz}
-                  </button>
-                ))}
-              </div>
-
-              <div className="text-[11px] text-neutral-500 flex items-center justify-between pt-1">
-                <span>INVENTORY STATUS:</span>
-                <span className="font-bold text-black">
-                  {product.stockCount <= 4
-                    ? `CRITICAL STOCK: ${product.stockCount} UNITS REMAINING`
-                    : `ALLOCATION AVAILABLE (${product.stockCount} UNITS)`}
-                </span>
-              </div>
+            <div className="flex items-baseline gap-3">
+              <span className="font-['Clash_Display'] font-medium text-2xl tracking-wide">₹{product.price}</span>
+              <span className="font-['JetBrains_Mono'] text-[10px] text-neutral-500 tracking-widest">MRP INCLUSIVE OF ALL TAXES</span>
             </div>
+          </div>
 
-            {/* Quantity Selector & Add To Cart Button */}
-            <div className="space-y-3 pt-2">
-              <div className="flex gap-3">
-                <div className="flex items-center border border-black w-32 justify-between">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-3 py-3 hover:bg-black hover:text-white transition-colors"
-                    aria-label="Decrease quantity"
-                  >
-                    -
-                  </button>
-                  <span className="font-bold text-sm">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="px-3 py-3 hover:bg-black hover:text-white transition-colors"
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
-                </div>
+          {/* Description */}
+          <p className="font-['JetBrains_Mono'] text-neutral-600 text-[13px] leading-relaxed mb-6">
+            {product.description} Upgrade your rotation with this premium drop. Cut for a relaxed, boxy fit to give you that effortless silhouette.
+          </p>
 
+          {/* Size Selector */}
+          <div className="mb-6">
+            <div className="flex justify-between items-end mb-3 font-['JetBrains_Mono']">
+              <span className="text-[11px] font-bold uppercase tracking-widest">SELECT SIZE</span>
+              <button className="text-[10px] text-neutral-500 hover:text-black underline">SIZE GUIDE</button>
+            </div>
+            <div className="grid grid-cols-5 gap-2 font-['Clash_Display']">
+              {product.sizes.map((sz) => (
                 <button
-                  onClick={handleAddToCart}
-                  className="flex-1 py-4 bg-black text-white border border-black hover:bg-white hover:text-black transition-colors font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 text-xs"
+                  key={sz}
+                  onClick={() => setSelectedSize(sz)}
+                  className={`py-3 text-sm font-medium uppercase transition-all ${
+                    selectedSize === sz
+                      ? 'bg-black text-white border-black'
+                      : 'bg-white text-black border-neutral-300 hover:border-black'
+                  } border`}
                 >
-                  <ShoppingBag size={16} />
-                  <span>ADD TO CART // ₹{product.price * quantity}</span>
+                  {sz}
                 </button>
-              </div>
+              ))}
+            </div>
+            {product.stockCount <= 5 && (
+              <p className="font-['JetBrains_Mono'] text-red-500 text-[10px] font-bold mt-3 tracking-widest uppercase">
+                🔥 HURRY, ONLY {product.stockCount} LEFT IN STOCK!
+              </p>
+            )}
+          </div>
 
-              {addedFeedback && (
-                <div className="border border-black bg-black text-white p-3 flex items-center justify-between text-xs animate-in fade-in duration-200">
-                  <span className="flex items-center gap-2">
-                    <Check size={16} />
-                    ALLOCATED [{quantity}x {product.code} - {selectedSize}] TO CART
-                  </span>
-                  <Link to="/track" className="underline font-bold text-[11px]">
-                    CHECKOUT &gt;
-                  </Link>
+          {/* Action Buttons */}
+          <div className="flex gap-3 mb-8 h-14">
+            <div className="flex items-center border border-black w-28 justify-between font-['JetBrains_Mono']">
+              <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-full h-full hover:bg-neutral-100 transition-colors">-</button>
+              <span className="font-bold text-sm w-full text-center">{quantity}</span>
+              <button onClick={() => setQuantity(quantity + 1)} className="w-full h-full hover:bg-neutral-100 transition-colors">+</button>
+            </div>
+            <button
+              onClick={handleAddToCart}
+              className="flex-1 bg-black text-white font-['Clash_Display'] font-medium uppercase tracking-widest text-sm hover:bg-white hover:text-black hover:border-black border border-black transition-all flex items-center justify-center gap-2"
+            >
+              <ShoppingBag size={18} strokeWidth={1.5} />
+              {addedFeedback ? 'ADDED TO BAG' : 'ADD TO BAG'}
+            </button>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="grid grid-cols-2 gap-4 p-4 border border-black mb-8 font-['JetBrains_Mono'] text-[10px] font-bold uppercase tracking-wider text-black">
+            <div className="flex items-center gap-2"><Truck size={14} /> FREE EXPRESS SHIPPING</div>
+            <div className="flex items-center gap-2"><RefreshCcw size={14} /> 7-DAY HASSLE FREE RETURNS</div>
+            <div className="flex items-center gap-2"><ShieldCheck size={14} /> SECURE CHECKOUT</div>
+            <div className="flex items-center gap-2"><Star size={14} /> PREMIUM QUALITY ASSURED</div>
+          </div>
+
+          {/* Accordions */}
+          <div className="border-t border-black font-['JetBrains_Mono']">
+            {/* Product Details */}
+            <div className="border-b border-black">
+              <button onClick={() => toggleAccordion('details')} className="w-full py-4 flex items-center justify-between text-left font-bold uppercase tracking-widest text-[11px]">
+                <span>PRODUCT DETAILS & FIT</span>
+                {activeAccordion === 'details' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </button>
+              {activeAccordion === 'details' && (
+                <div className="pb-4 text-[12px] text-neutral-600 space-y-2">
+                  <ul className="list-inside space-y-1">
+                    <li><span className="text-black font-bold">MATERIAL:</span> {product.specs.material}</li>
+                    <li><span className="text-black font-bold">WEIGHT:</span> {product.specs.weight}</li>
+                    <li><span className="text-black font-bold">FIT:</span> {product.specs.fit}</li>
+                    <li><span className="text-black font-bold">HARDWARE:</span> {product.specs.hardware}</li>
+                  </ul>
+                  <p className="pt-2 text-[10px] uppercase">Model is 6'1" and wearing size L.</p>
                 </div>
               )}
             </div>
 
-            {/* Quick Badges */}
-            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-neutral-200 text-[11px] text-neutral-600">
-              <div className="flex items-center gap-1.5">
-                <Truck size={14} className="text-black" />
-                <span>INDIAN AIR DISPATCH</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck size={14} className="text-black" />
-                <span>ARCHIVAL AUTHENTICITY SEAL</span>
-              </div>
-            </div>
-
-            {/* Technical Garment Specs Accordion */}
-            <div className="border-t border-black pt-4 space-y-2">
-              <div className="border border-black">
-                <button
-                  onClick={() => toggleAccordion('fabric')}
-                  className="w-full p-3.5 flex items-center justify-between text-left font-bold uppercase tracking-wider hover:bg-neutral-50"
-                >
-                  <span>01 // FABRIC &amp; MATERIAL COMPOSITION</span>
-                  {activeAccordion === 'fabric' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                {activeAccordion === 'fabric' && (
-                  <div className="p-4 border-t border-black bg-neutral-50 space-y-2 text-neutral-700 text-xs">
-                    <div className="flex justify-between border-b border-neutral-200 pb-1">
-                      <span className="text-neutral-500">MATERIAL:</span>
-                      <span className="font-semibold text-black text-right">{product.specs.material}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-neutral-200 pb-1">
-                      <span className="text-neutral-500">WEIGHT:</span>
-                      <span className="font-semibold text-black">{product.specs.weight}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-neutral-200 pb-1">
-                      <span className="text-neutral-500">ORIGIN:</span>
-                      <span className="font-semibold text-black">{product.specs.origin}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="border border-black">
-                <button
-                  onClick={() => toggleAccordion('fit')}
-                  className="w-full p-3.5 flex items-center justify-between text-left font-bold uppercase tracking-wider hover:bg-neutral-50"
-                >
-                  <span>02 // FIT ARCHITECTURE &amp; DIMENSIONS</span>
-                  {activeAccordion === 'fit' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                {activeAccordion === 'fit' && (
-                  <div className="p-4 border-t border-black bg-neutral-50 space-y-3 text-neutral-700 text-xs">
-                    <p className="font-semibold text-black">{product.specs.fit}</p>
-                    {product.dimensions && (
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-left border border-black text-[11px] bg-white">
-                          <thead className="bg-black text-white">
-                            <tr>
-                              <th className="p-1.5 border-r border-neutral-700">SIZE</th>
-                              <th className="p-1.5 border-r border-neutral-700">CHEST</th>
-                              <th className="p-1.5 border-r border-neutral-700">LENGTH</th>
-                              <th className="p-1.5 border-r border-neutral-700">SHOULDER</th>
-                              <th className="p-1.5">SLEEVE</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {product.dimensions.map((dim) => (
-                              <tr key={dim.size} className="border-t border-black">
-                                <td className="p-1.5 font-bold border-r border-black">{dim.size}</td>
-                                <td className="p-1.5 border-r border-black">{dim.chest}</td>
-                                <td className="p-1.5 border-r border-black">{dim.length}</td>
-                                <td className="p-1.5 border-r border-black">{dim.shoulder}</td>
-                                <td className="p-1.5">{dim.sleeve}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              <div className="border border-black">
-                <button
-                  onClick={() => toggleAccordion('hardware')}
-                  className="w-full p-3.5 flex items-center justify-between text-left font-bold uppercase tracking-wider hover:bg-neutral-50"
-                >
-                  <span>03 // HARDWARE &amp; CONSTRUCTION</span>
-                  {activeAccordion === 'hardware' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                {activeAccordion === 'hardware' && (
-                  <div className="p-4 border-t border-black bg-neutral-50 space-y-2 text-neutral-700 text-xs">
-                    <div className="flex justify-between border-b border-neutral-200 pb-1">
-                      <span className="text-neutral-500">HARDWARE:</span>
-                      <span className="font-semibold text-black text-right">{product.specs.hardware}</span>
-                    </div>
-                    <p className="text-[11px] text-neutral-600 pt-1">
-                      Reinforced bar-tack stress points. Laser-cut seam allowance. Vacuum sealed with non-degrading nitrogen pack.
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <div className="border border-black">
-                <button
-                  onClick={() => toggleAccordion('care')}
-                  className="w-full p-3.5 flex items-center justify-between text-left font-bold uppercase tracking-wider hover:bg-neutral-50"
-                >
-                  <span>04 // ARCHIVAL CARE PROTOCOLS</span>
-                  {activeAccordion === 'care' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                {activeAccordion === 'care' && (
-                  <div className="p-4 border-t border-black bg-neutral-50 space-y-2 text-neutral-700 text-xs">
-                    <p className="text-black font-semibold">{product.specs.care}</p>
-                    <p className="text-[11px] text-neutral-600">
-                      Do not expose to high heat tumble cycles. Iron on reverse using a protective cloth barrier.
-                    </p>
-                  </div>
-                )}
-              </div>
+            {/* Care Instructions */}
+            <div className="border-b border-black">
+              <button onClick={() => toggleAccordion('care')} className="w-full py-4 flex items-center justify-between text-left font-bold uppercase tracking-widest text-[11px]">
+                <span>WASH CARE</span>
+                {activeAccordion === 'care' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </button>
+              {activeAccordion === 'care' && (
+                <div className="pb-4 text-[12px] text-neutral-600">
+                  <p>{product.specs.care}</p>
+                  <p className="mt-2 text-[10px] uppercase">Machine wash cold. Do not tumble dry. Iron on reverse.</p>
+                </div>
+              )}
             </div>
           </div>
+
         </div>
       </div>
 
-      {/* Related Archival Pieces Section */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
-        <div className="flex justify-between items-end border-b border-black pb-4 mb-6">
-          <div>
-            <div className="text-xs font-mono text-neutral-500 uppercase tracking-widest">
-              SYSTEM_01 COMPANION PIECES
-            </div>
-            <h3 className="font-heading text-2xl font-bold">
-              RELATED ARCHIVAL SILHOUETTES
-            </h3>
-          </div>
-          <Link to="/" className="font-mono text-xs hover:underline text-black font-bold">
-            VIEW FULL ARCHIVE &gt;
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 border border-black divide-y md:divide-y-0 md:divide-x divide-black">
+      {/* Complete The Look / Related Products */}
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-16 border-t border-black">
+        <h2 className="font-['Clash_Display'] font-semibold text-2xl uppercase tracking-tight mb-8">COMPLETE THE LOOK</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {relatedProducts.map((rel) => (
-            <div
-              key={rel.id}
-              onClick={() => navigate(`/product/${rel.id}`)}
-              className="p-4 cursor-pointer hover:bg-neutral-50 transition-colors group"
-            >
-              <div className="aspect-[4/5] bg-neutral-100 border border-black mb-3 overflow-hidden">
-                <img
-                  src={rel.images[0]}
-                  alt={rel.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                  referrerPolicy="no-referrer"
-                />
+            <div key={rel.id} onClick={() => navigate(`/product/${rel.id}`)} className="cursor-pointer group">
+              <div className="aspect-[3/4] bg-white mb-4 overflow-hidden relative border border-black/10 group-hover:border-black transition-colors">
+                <img src={rel.images[0]} alt={rel.name} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <div className="font-mono text-xs space-y-1">
-                <div className="text-[10px] text-neutral-500">{rel.code}</div>
-                <div className="font-heading font-bold text-sm group-hover:underline">{rel.name}</div>
-                <div className="font-bold">₹{rel.price} INR</div>
+              <div className="space-y-1 font-['JetBrains_Mono']">
+                <h3 className="font-bold text-[11px] uppercase tracking-wider truncate">{rel.name}</h3>
+                <p className="text-[12px] font-medium text-neutral-600">₹{rel.price}</p>
               </div>
             </div>
           ))}

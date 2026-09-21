@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Search, ShoppingBag, User, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -12,141 +12,152 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch, onOpenAccount }) =
   const { totalItems, openCart } = useCart();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Smooth blur effect when scrolling down
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
-    { label: 'ARCHIVE', path: '/' },
+    { label: 'SHOP', path: '/' },
     { label: 'TRACK ORDER', path: '/track' },
     { label: 'POLICIES', path: '/policies' },
   ];
 
   return (
-    <>
-      <header className="sticky top-0 z-40 w-full bg-white border-b border-black select-none">
-        {/* Top Minimal Notification Bar */}
-        <div className="bg-black text-white px-4 py-1 text-xs font-mono flex items-center justify-between tracking-wider border-b border-black">
-          <span className="hidden sm:inline">ANON APPAREL</span>
-          <span className="hidden sm:inline text-right">INDIA SHIPMENT</span>
+    <header 
+      className={`sticky top-0 z-40 w-full transition-all duration-300 select-none ${
+        scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-transparent' : 'bg-white border-b border-neutral-100'
+      }`}
+    >
+      {/* Top Minimal Notification Bar (Snitch style) */}
+      <div className="bg-black text-white px-4 py-1.5 text-[10px] font-['JetBrains_Mono'] flex items-center justify-center tracking-widest uppercase font-bold">
+        ⚡ FREE EXPRESS SHIPPING ON ALL PREPAID ORDERS
+      </div>
+
+      {/* Main Header Row */}
+      <div className="flex items-center justify-between h-16 md:h-20 px-4 md:px-8 max-w-[1400px] mx-auto">
+        
+        {/* Left: Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8 text-[11px] font-['JetBrains_Mono'] font-bold tracking-widest uppercase w-1/3">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`relative py-2 transition-colors hover:text-black ${
+                  isActive ? 'text-black' : 'text-neutral-400'
+                }`}
+              >
+                {link.label}
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-black"></span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Mobile: Hamburger Toggle */}
+        <div className="flex md:hidden w-1/3 items-center">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 -ml-2 text-black hover:bg-neutral-100 rounded-full transition-colors"
+            aria-label="Toggle Navigation Menu"
+          >
+            {mobileMenuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
+          </button>
         </div>
 
-        {/* Main Header Row */}
-        <div className="flex items-center justify-between h-16 px-4 md:px-8 max-w-7xl mx-auto">
-          {/* Left: Mobile Toggle & Desktop Nav */}
-          <div className="flex items-center gap-6">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 border border-black hover:bg-black hover:text-white transition-colors"
-              aria-label="Toggle Navigation Menu"
-            >
-              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
+        {/* Center: Brand Wordmark */}
+        <div className="w-1/3 flex justify-center">
+          <Link to="/" className="inline-block hover:scale-105 transition-transform duration-300">
+            <span className="font-['Clash_Display'] font-semibold text-3xl md:text-4xl tracking-tighter uppercase text-black">
+              ANON
+            </span>
+            {/* Note: If you want to use the image logo instead of the text, uncomment the line below and remove the span above */}
+            {/* <img src="/logo@4x.png" alt="ANON" className="h-8 md:h-10 w-auto object-contain" /> */}
+          </Link>
+        </div>
 
-            <nav className="hidden md:flex items-center gap-8 text-xs font-mono tracking-widest">
-              {navLinks.map((link) => {
-                const isActive = location.pathname === link.path;
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={`relative py-1 hover:text-black transition-colors ${
-                      isActive
-                        ? 'font-bold border-b-2 border-black'
-                        : 'text-neutral-600 hover:border-b hover:border-black'
-                    }`}
-                  >
-                    [{link.label}]
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
+        {/* Right: Actions (Ultra minimal icons) */}
+        <div className="w-1/3 flex items-center justify-end gap-2 md:gap-4">
+          <button
+            onClick={onOpenSearch}
+            className="p-2 text-black hover:bg-neutral-100 rounded-full transition-colors hidden sm:flex items-center"
+            title="Search"
+          >
+            <Search size={20} strokeWidth={1.5} />
+          </button>
 
-          {/* Center: Brand Wordmark (Strict pure black typography) */}
-          <div className="flex-1 text-center md:flex-initial">
-          <Link
-               to="/"
-               className="inline-block hover:opacity-80 transition-opacity"
-  >
-          <img 
-               src="/logo@4x.png" 
-              alt="ANON" 
-              className="h-20 md:h-22 w-auto object-contain" 
-              />
-           </Link>
-           </div>
+          <button
+            onClick={onOpenAccount}
+            className="p-2 text-black hover:bg-neutral-100 rounded-full transition-colors hidden sm:flex items-center"
+            title="Account"
+          >
+            <User size={20} strokeWidth={1.5} />
+          </button>
 
-          {/* Right: Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              onClick={onOpenSearch}
-              className="p-2 sm:px-3 sm:py-2 border border-black hover:bg-black hover:text-white transition-colors flex items-center gap-2 text-xs font-mono"
-              title="Search Archive"
-            >
-              <Search size={16} />
-              <span className="hidden lg:inline">SEARCH</span>
-            </button>
-
-            <button
-              onClick={onOpenAccount}
-              className="p-2 sm:px-3 sm:py-2 border border-black hover:bg-black hover:text-white transition-colors flex items-center gap-2 text-xs font-mono"
-              title="Client ID / Account"
-            >
-              <User size={16} />
-              <span className="hidden lg:inline">ACCOUNT</span>
-            </button>
-
-            <button
-              onClick={openCart}
-              className="p-2 sm:px-4 sm:py-2 bg-black text-white border border-black hover:bg-white hover:text-black transition-colors flex items-center gap-2 text-xs font-mono font-medium"
-              aria-label={`Shopping Cart with ${totalItems} items`}
-            >
-              <ShoppingBag size={16} />
-              <span>CART</span>
-              <span className="px-1.5 py-0.5 bg-white text-black font-bold text-[11px] border border-black">
-                {String(totalItems).padStart(2, '0')}
+          <button
+            onClick={openCart}
+            className="p-2 text-black hover:bg-neutral-100 rounded-full transition-colors flex items-center relative"
+            aria-label={`Shopping Cart with ${totalItems} items`}
+          >
+            <ShoppingBag size={20} strokeWidth={1.5} />
+            {totalItems > 0 && (
+              <span className="absolute top-1.5 right-1 bg-black text-white font-bold text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-['JetBrains_Mono']">
+                {totalItems}
               </span>
-            </button>
-          </div>
+            )}
+          </button>
         </div>
+      </div>
 
-        {/* Mobile Dropdown Drawer */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-black bg-white px-4 py-6 font-mono text-sm space-y-4">
-            <div className="text-xs text-neutral-500 uppercase tracking-widest border-b border-black pb-2">
-              NAVIGATION
-            </div>
+      {/* Mobile Dropdown Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full border-t border-neutral-100 bg-white/95 backdrop-blur-md shadow-lg font-['JetBrains_Mono'] flex flex-col animate-in slide-in-from-top-2 duration-200">
+          <div className="flex flex-col px-6 py-4">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 border-b border-neutral-200 text-black font-bold tracking-wider"
+                className="py-4 border-b border-neutral-100 text-black font-bold tracking-widest uppercase text-xs flex items-center justify-between"
               >
-                &gt; {link.label}
+                {link.label}
               </Link>
             ))}
-            <div className="pt-2 flex flex-col gap-2">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenSearch();
-                }}
-                className="w-full py-2 text-left border border-black px-3 flex items-center gap-2 text-xs"
-              >
-                <Search size={14} /> SEARCH ARCHIVE CATALOG
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenAccount();
-                }}
-                className="w-full py-2 text-left border border-black px-3 flex items-center gap-2 text-xs"
-              >
-                <User size={14} /> CLIENT PROFILE &amp; DISPATCH SPECS
-              </button>
-            </div>
           </div>
-        )}
-      </header>
-    </>
+          
+          {/* Mobile Bottom Actions */}
+          <div className="flex items-center justify-between px-6 py-6 bg-neutral-50 border-t border-neutral-100">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenSearch();
+              }}
+              className="flex flex-col items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-black transition-colors"
+            >
+              <Search size={18} strokeWidth={1.5} className="text-black" /> Search
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenAccount();
+              }}
+              className="flex flex-col items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-black transition-colors"
+            >
+              <User size={18} strokeWidth={1.5} className="text-black" /> Account
+            </button>
+          </div>
+        </div>
+      )}
+    </header>
   );
 };
