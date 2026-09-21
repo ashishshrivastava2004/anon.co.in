@@ -10,18 +10,17 @@ export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
 
-  const categories = ['ALL', 'TOPS', 'BOTTOMS', 'OUTERWEAR', 'ACCESSORIES'];
+  const categories = ['ALL', 'SHIRTS', 'TROUSERS', 'TSHIRT', 'JEANS', 'CARGOS', 'POLO'];
 
   const filteredProducts = selectedCategory === 'ALL'
     ? PRODUCTS
-    : PRODUCTS.filter((p) => p.category === selectedCategory);
+    : PRODUCTS.filter((p) => p.category?.toUpperCase() === selectedCategory);
 
   const handleQuickAdd = (product: Product, e: React.MouseEvent) => {
     e.stopPropagation();
     addToCart(product, product.sizes[0], 1);
   };
 
-  // Ticker content component to keep code clean and repeat it easily for a flawless loop
   const TickerContent = () => (
     <>
       {[...Array(4)].map((_, i) => (
@@ -42,16 +41,18 @@ export const HomePage: React.FC = () => {
   return (
     <div className="w-full bg-[#FFFFFF] text-[#000000] selection:bg-black selection:text-white pb-10">
       
-      {/* 1. HERO BANNER (Edge-to-Edge Bonkers Style) */}
+      {/* 1. HERO BANNER (Video Background without dark overlay) */}
       <section className="relative w-full h-[85vh] bg-neutral-900 flex items-center justify-center overflow-hidden">
-        <img
-          src="/b_A_medium-full_studio.webp"
-          alt="ANON Drop 01"
-          className="absolute inset-0 w-full h-full object-cover object-top opacity-80"
-          referrerPolicy="no-referrer"
-        />
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-black/40"></div>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover object-top"
+        >
+          <source src="/bg video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         
         <div className="relative z-10 flex flex-col items-center text-center text-white px-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-['JetBrains_Mono'] tracking-widest uppercase mb-6 rounded-full">
@@ -75,26 +76,23 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. INFINITE MARQUEE TICKER (Flawless Loop Fix) */}
+      {/* 2. INFINITE MARQUEE TICKER */}
       <section className="w-full bg-black text-white py-3 flex overflow-hidden whitespace-nowrap">
-        {/* First block translating left */}
         <div className="flex shrink-0 animate-marquee items-center font-['JetBrains_Mono'] text-[11px] font-bold tracking-widest uppercase">
           <TickerContent />
         </div>
-        {/* Exact replica block seamlessly following the first one */}
         <div className="flex shrink-0 animate-marquee items-center font-['JetBrains_Mono'] text-[11px] font-bold tracking-widest uppercase" aria-hidden="true">
           <TickerContent />
         </div>
       </section>
 
-      {/* 3. NEW ARRIVALS GRID (Snitch Style Clean Grid) */}
+      {/* 3. NEW ARRIVALS GRID */}
       <section id="shop" className="w-full max-w-[1400px] mx-auto px-4 md:px-8 py-16">
         <div className="flex flex-col items-center mb-12">
           <h2 className="font-['Clash_Display'] text-3xl md:text-4xl font-semibold tracking-tight uppercase mb-6">
             LATEST DROPS
           </h2>
           
-          {/* Clean Pill Filters */}
           <div className="flex flex-wrap justify-center gap-2 font-['JetBrains_Mono'] text-xs">
             {categories.map((cat) => (
               <button
@@ -112,7 +110,6 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Product Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-6 md:gap-y-10">
           {filteredProducts.map((product) => (
             <div
@@ -120,7 +117,6 @@ export const HomePage: React.FC = () => {
               onClick={() => navigate(`/product/${product.id}`)}
               className="group cursor-pointer flex flex-col"
             >
-              {/* Image Container */}
               <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden mb-4 border border-black/5 group-hover:border-black/20 transition-colors">
                 <img
                   src={product.images[0]}
@@ -129,14 +125,12 @@ export const HomePage: React.FC = () => {
                   referrerPolicy="no-referrer"
                 />
                 
-                {/* Badges */}
                 {product.stockCount <= 5 && (
                   <div className="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 text-[9px] font-['JetBrains_Mono'] font-bold tracking-widest uppercase">
                     SELLING FAST
                   </div>
                 )}
 
-                {/* Hover Quick Add (Desktop) */}
                 <div className="absolute inset-x-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-300 hidden md:block">
                   <button
                     onClick={(e) => handleQuickAdd(product, e)}
@@ -147,7 +141,6 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Product Info */}
               <div className="flex flex-col items-center text-center space-y-1.5 px-2">
                 <h3 className="font-['Clash_Display'] font-medium text-[15px] uppercase tracking-wide truncate w-full text-black">
                   {product.name}
@@ -162,7 +155,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. BRAND USPs (Clean, Modern Trust Signals) */}
+      {/* 4. BRAND USPs */}
       <section className="w-full border-t border-neutral-200 bg-neutral-50 mt-10">
         <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-neutral-200">
@@ -176,7 +169,7 @@ export const HomePage: React.FC = () => {
             </div>
 
             <div className="flex flex-col items-center space-y-3 pt-6 md:pt-0">
-              <ShieldCheck size={28} strokeWidth={1.5} className="text-black" />
+              <ShieldCheck size28={28} strokeWidth={1.5} className="text-black" />
               <h4 className="font-['Clash_Display'] font-semibold text-lg uppercase tracking-wide">Premium Heavyweight</h4>
               <p className="font-['JetBrains_Mono'] text-[11px] text-neutral-500 max-w-xs leading-relaxed">
                 Engineered with 500+ GSM pure cotton. Boxy, oversized fits designed to outlast trends.

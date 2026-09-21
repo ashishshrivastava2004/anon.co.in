@@ -8,7 +8,7 @@ export const PRODUCTS: Product[] = [
     tagline: '580 GSM Custom Loopback Terry / Raw Edge Trim',
     price: 240,
     currency: 'INR',
-    category: 'TOPS',
+    category: 'TSHIRT', // mapped to filter
     images: [
       'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1200&q=80',
@@ -41,7 +41,7 @@ export const PRODUCTS: Product[] = [
     tagline: 'Technical Ventile Cotton / Magnetic Fidlock Closures',
     price: 320,
     currency: 'INR',
-    category: 'BOTTOMS',
+    category: 'CARGOS', // mapped to filter
     images: [
       'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?auto=format&fit=crop&w=1200&q=80',
@@ -68,120 +68,144 @@ export const PRODUCTS: Product[] = [
     ]
   },
   {
-    id: 'anon-jacket-03',
-    code: 'AN-JK03-BLK',
-    name: '03 / TECHNICAL BALLISTIC SHELL JACKET',
-    tagline: '3-Layer Membrane / Raccagni Asymmetric Two-Way Zip',
-    price: 480,
+    id: 'anon-shirt-03',
+    code: 'AN-SH03-WHT',
+    name: '03 / ARCHIVAL OXFORD SHIRT',
+    tagline: 'Heavyweight Japanese Oxford Cotton / Mother of Pearl Buttons',
+    price: 290,
     currency: 'INR',
-    category: 'OUTERWEAR',
+    category: 'SHIRTS',
     images: [
-      'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1506152983158-b4a74a01c721?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'An uncompromising outer shell built to withstand extreme elements with an archival minimalist posture. Triple-layer laminate membrane bonded with waterproof taped seams throughout. Offset asymmetric Raccagni zipper closure with stowaway hood and sling strap system for hands-free transport.',
-    sizes: ['M', 'L', 'XL'],
+    description: 'A classic silhouette re-engineered with dense oxford cloth. Features structured button-down collar, single chest pocket, and curved hemline.',
+    sizes: ['S', 'M', 'L', 'XL'],
     inStock: true,
-    stockCount: 3,
+    stockCount: 6,
     specs: {
-      material: 'Cordura Ripstop / 3-Layer PTFE Waterproof Membrane',
-      weight: '20,000mm Hydrostatic Head / 15,000g Breathability',
-      fit: 'Oversized Technical Outer Shell / Layering Spec',
-      hardware: 'Italian Raccagni SuperR Zippers / Duraflex Hardware',
-      origin: 'Milan & Tokyo',
-      care: 'Machine wash cool with technical fabric wash. Hang to air dry.'
+      material: '100% Japanese Oxford Cotton',
+      weight: '240 GSM',
+      fit: 'Relaxed Fit',
+      hardware: 'Mother of Pearl Buttons',
+      origin: 'Okayama, Japan',
+      care: 'Machine wash cold. Hang dry.'
     },
     dimensions: [
-      { size: 'M', chest: '68 cm', length: '72 cm', shoulder: '56 cm', sleeve: '67 cm' },
-      { size: 'L', chest: '71 cm', length: '74 cm', shoulder: '58 cm', sleeve: '68 cm' },
-      { size: 'XL', chest: '74 cm', length: '76 cm', shoulder: '60 cm', sleeve: '69 cm' }
+      { size: 'M', chest: '112 cm', length: '74 cm', shoulder: '48 cm', sleeve: '65 cm' }
     ]
   },
   {
-    id: 'anon-tee-04',
-    code: 'AN-TS04-WHT',
-    name: '04 / INTERLOCK BOX TEE',
+    id: 'anon-trouser-04',
+    code: 'AN-TR04-CHR',
+    name: '04 / STRUCTURED PLEATED TROUSER',
+    tagline: 'Draped Wool-Blend / Tailored Wide Leg',
+    price: 360,
+    currency: 'INR',
+    category: 'TROUSERS',
+    images: [
+      'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80'
+    ],
+    description: 'Crisp front pleats with a relaxed wide-leg drape. Crafted from a premium wool-blend fabric designed for transitional seasons.',
+    sizes: ['S', 'M', 'L', 'XL'],
+    inStock: true,
+    stockCount: 5,
+    specs: {
+      material: 'Wool & Organic Cotton Blend',
+      weight: '300 GSM',
+      fit: 'Wide Leg Tailored',
+      hardware: 'Concealed hook-and-bar closure',
+      origin: 'Milan, Italy',
+      care: 'Dry clean only.'
+    },
+    dimensions: [
+      { size: 'M', chest: 'W32', length: '108 cm', shoulder: 'N/A', sleeve: 'Inseam 79 cm' }
+    ]
+  },
+  {
+    id: 'anon-tee-05',
+    code: 'AN-TS05-WHT',
+    name: '05 / INTERLOCK BOX TEE',
     tagline: '310 GSM Double-Faced Cotton / Stark Architectural Seam',
     price: 130,
     currency: 'INR',
-    category: 'TOPS',
+    category: 'TSHIRT',
     images: [
       'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'The archetype basic reinvented through heavyweight architectural form. 310 GSM double-faced compact cotton jersey that holds a defined rigid box shape rather than draping casually. Features blind hem stitching, dense 1x1 rib collar that will not stretch over time, and laser-engraved identification patch at the inner spine.',
+    description: 'The archetype basic reinvented through heavyweight architectural form. 310 GSM double-faced compact cotton jersey that holds a defined rigid box shape rather than draping casually.',
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     inStock: true,
     stockCount: 15,
     specs: {
       material: '100% Supima Combed Cotton Double-Knit',
       weight: '310 GSM Dense Jersey',
-      fit: 'Boxy / Wide Neck / Elbow Length Sleeve',
-      hardware: 'Sub-surface tonal stitching / heat-set spine tag',
+      fit: 'Boxy / Wide Neck',
+      hardware: 'Sub-surface tonal stitching',
       origin: 'Porto, Portugal',
-      care: 'Gentle cycle cold. Do not bleach. Cool iron on reverse.'
+      care: 'Gentle cycle cold.'
     },
     dimensions: [
-      { size: 'S', chest: '60 cm', length: '69 cm', shoulder: '54 cm', sleeve: '28 cm' },
-      { size: 'M', chest: '63 cm', length: '71 cm', shoulder: '56 cm', sleeve: '29 cm' },
-      { size: 'L', chest: '66 cm', length: '73 cm', shoulder: '58 cm', sleeve: '30 cm' },
-      { size: 'XL', chest: '69 cm', length: '75 cm', shoulder: '60 cm', sleeve: '31 cm' }
+      { size: 'M', chest: '63 cm', length: '71 cm', shoulder: '56 cm', sleeve: '29 cm' }
     ]
   },
   {
-    id: 'anon-vest-05',
-    code: 'AN-VT05-BLK',
-    name: '05 / TACTICAL HOLSTER VEST',
-    tagline: '1000D Ballistic Cordura / Quick-Release Cobra Buckle',
-    price: 280,
+    id: 'anon-jeans-06',
+    code: 'AN-JN06-IND',
+    name: '06 / RAW SELVEDGE DENIM JEANS',
+    tagline: '14oz Kuroki Mills Selvedge / Relaxed Straight Cut',
+    price: 420,
     currency: 'INR',
-    category: 'ACCESSORIES',
+    category: 'JEANS',
     images: [
-      'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1542272604-780c96856592?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'An archival utility harness engineered for modular layering over hoodies or under coats. Fabricated from 1000D high-tenacity ballistic Cordura nylon. Equipped with dual 3D volumetric front cargo pouches, rear hydration bladder sheath, and authentic AustriAlpin Cobra quick-release hardware.',
-    sizes: ['S', 'M', 'L'],
-    inStock: true,
-    stockCount: 6,
-    specs: {
-      material: '1000D Ballistic Cordura Nylon / Mil-Spec Webbing',
-      weight: '450g Total Dry Weight',
-      fit: 'Fully Adjustable Webbing Harness / One Size Fits Most',
-      hardware: 'AustriAlpin Cobra Buckles (Aluminium)',
-      origin: 'Innsbruck & Tokyo',
-      care: 'Spot clean only with damp cloth.'
-    }
-  },
-  {
-    id: 'anon-boot-06',
-    code: 'AN-FT06-BLK',
-    name: '06 / ARCHIVAL MONOLITH LEATHER BOOT',
-    tagline: 'Vegetable-Tanned Calfskin / Goodyear Welted Vibram Lug',
-    price: 590,
-    currency: 'INR',
-    category: 'FOOTWEAR',
-    images: [
-      'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80'
-    ],
-    description: 'A monolithic silhouette crafted by third-generation bootmakers in Tuscany. 2.4mm full-grain Italian calf leather dipped in vegetable tannins. 360-degree Goodyear welt construction anchored by an exaggerated Vibram Montagna lug outsole. Heavy brass eyelets and waxed utilitarian laces.',
+    description: 'Unwashed 14oz Japanese selvedge denim from Kuroki Mills. Built to mold uniquely to the wearer over years of wear.',
     sizes: ['S', 'M', 'L', 'XL'],
     inStock: true,
-    stockCount: 2,
+    stockCount: 7,
     specs: {
-      material: '2.4mm Full-Grain Italian Vegetable-Tanned Leather',
-      weight: '820g per boot',
-      fit: 'True to size / Includes leather insole spacer',
-      hardware: 'Custom Vibram Montagna Lug / Antiqued Blackened Eyelets',
-      origin: 'Tuscany, Italy',
-      care: 'Condition with natural beeswax balsam. Store in cedar trees.'
-    }
+      material: '100% Japanese Selvedge Cotton',
+      weight: '14 oz Heavyweight Denim',
+      fit: 'Relaxed Straight',
+      hardware: 'Copper rivets & custom button fly',
+      origin: 'Okayama, Japan',
+      care: 'Wash cold inside out after 6 months of wear.'
+    },
+    dimensions: [
+      { size: 'M', chest: 'W32', length: '106 cm', shoulder: 'N/A', sleeve: 'Inseam 80 cm' }
+    ]
+  },
+  {
+    id: 'anon-polo-07',
+    code: 'AN-PL07-BLK',
+    name: '07 / KNIT ARCHIVAL POLO',
+    tagline: 'Merino Wool Blend / Open Placket Design',
+    price: 260,
+    currency: 'INR',
+    category: 'POLO',
+    images: [
+      'https://images.unsplash.com/photo-1625910513411-79b2960662d0?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=1200&q=80'
+    ],
+    description: 'A refined take on the classic polo. Knit from breathable merino wool with an open collar placket and clean ribbed trims.',
+    sizes: ['S', 'M', 'L', 'XL'],
+    inStock: true,
+    stockCount: 9,
+    specs: {
+      material: 'Merino Wool & Cotton Knit',
+      weight: '220 GSM',
+      fit: 'Slim Boxy',
+      hardware: 'Seamless knit placket',
+      origin: 'Florence, Italy',
+      care: 'Hand wash cold or dry clean.'
+    },
+    dimensions: [
+      { size: 'M', chest: '104 cm', length: '70 cm', shoulder: '45 cm', sleeve: '26 cm' }
+    ]
   }
 ];
 
@@ -213,7 +237,7 @@ export const MOCK_ORDERS: Record<string, TrackedOrder> = {
     email: 'archivist@studio.org',
     createdAt: '2026-09-17 19:45 JST',
     status: 'PROCESSING',
-    carrier: 'DHL Express  Indian Archival',
+    carrier: 'DHL Express Indian Archival',
     trackingNumber: 'DHL-EX-4491028301',
     estimatedDelivery: 'SEPTEMBER 24, 2026',
     shippingAddress: '14 Greene St, SoHo, New York, NY 10013, USA',
