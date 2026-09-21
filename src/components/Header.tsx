@@ -77,13 +77,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch, onOpenAccount }) =
 
         {/* Center: Brand Wordmark */}
         <div className="w-1/3 flex justify-center">
-          <Link to="/" className="inline-block hover:scale-105 transition-transform duration-300">
-            <span className="font-['Clash_Display'] font-semibold text-3xl md:text-4xl tracking-tighter uppercase text-black">
-              ANON
-            </span>
-            {/* Note: If you want to use the image logo instead of the text, uncomment the line below and remove the span above */}
-            {/* <img src="/logo@4x.png" alt="ANON" className="h-8 md:h-10 w-auto object-contain" /> */}
-          </Link>
+        <Link to="/" className="inline-block hover:opacity-80 transition-opacity">
+        <img 
+               src="/logo@4x.png" 
+               alt="ANON" 
+               className="h-20 md:h-22 w-auto object-contain" 
+              />
+            </Link>
         </div>
 
         {/* Right: Actions (Ultra minimal icons) */}
