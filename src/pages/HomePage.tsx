@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Truck, ShieldCheck, Zap } from 'lucide-react';
-import { PRODUCTS } from '../data/products';
+import { useProducts } from '../hooks/useProducts.ts';
 import { useCart } from '../context/CartContext';
 import { Product } from '../types';
 
@@ -10,11 +10,15 @@ export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
 
+  // Supabase Fetch Hook
+  const { products, loading, error } = useProducts();
+
   const categories = ['ALL', 'SHIRTS', 'TROUSERS', 'TSHIRT', 'JEANS', 'CARGOS', 'POLO'];
 
+  // Using dynamic 'products' instead of static 'PRODUCTS'
   const filteredProducts = selectedCategory === 'ALL'
-    ? PRODUCTS
-    : PRODUCTS.filter((p) => p.category?.toUpperCase() === selectedCategory);
+    ? products
+    : products.filter((p) => p.category?.toUpperCase() === selectedCategory);
 
   const handleQuickAdd = (product: Product, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -110,49 +114,67 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-6 md:gap-y-10">
-          {filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              onClick={() => navigate(`/product/${product.id}`)}
-              className="group cursor-pointer flex flex-col"
-            >
-              <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden mb-4 border border-black/5 group-hover:border-black/20 transition-colors">
-                <img
-                  src={product.images[0]}
-                  alt={product.name}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                  referrerPolicy="no-referrer"
-                />
-                
-                {product.stockCount <= 5 && (
-                  <div className="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 text-[9px] font-['JetBrains_Mono'] font-bold tracking-widest uppercase">
-                    SELLING FAST
+        {/* Dynamic State Handling for Products */}
+        {loading ? (
+          <div className="w-full flex justify-center items-center py-20 font-['JetBrains_Mono'] text-sm tracking-widest uppercase animate-pulse">
+            LOADING DROPS...
+          </div>
+        ) : error ? (
+          <div className="w-full flex justify-center items-center py-20 font-['JetBrains_Mono'] text-sm tracking-widest uppercase text-red-500">
+            {error}
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="w-full flex flex-col items-center justify-center py-20">
+            <p className="font-['Clash_Display'] text-2xl uppercase font-bold">Archive Empty</p>
+            <p className="font-['JetBrains_Mono'] text-xs text-neutral-500 uppercase tracking-widest mt-2">
+              No products found for this category.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-6 md:gap-y-10">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                onClick={() => navigate(`/product/${product.id}`)}
+                className="group cursor-pointer flex flex-col"
+              >
+                <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden mb-4 border border-black/5 group-hover:border-black/20 transition-colors">
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    referrerPolicy="no-referrer"
+                  />
+                  
+                  {product.stockCount <= 5 && (
+                    <div className="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 text-[9px] font-['JetBrains_Mono'] font-bold tracking-widest uppercase">
+                      SELLING FAST
+                    </div>
+                  )}
+
+                  <div className="absolute inset-x-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-300 hidden md:block">
+                    <button
+                      onClick={(e) => handleQuickAdd(product, e)}
+                      className="w-full py-3 bg-white/95 backdrop-blur text-black font-['Clash_Display'] font-medium text-sm tracking-widest uppercase hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Plus size={16} strokeWidth={2} /> QUICK ADD
+                    </button>
                   </div>
-                )}
+                </div>
 
-                <div className="absolute inset-x-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-300 hidden md:block">
-                  <button
-                    onClick={(e) => handleQuickAdd(product, e)}
-                    className="w-full py-3 bg-white/95 backdrop-blur text-black font-['Clash_Display'] font-medium text-sm tracking-widest uppercase hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Plus size={16} strokeWidth={2} /> QUICK ADD
-                  </button>
+                <div className="flex flex-col items-center text-center space-y-1.5 px-2">
+                  <h3 className="font-['Clash_Display'] font-medium text-[15px] uppercase tracking-wide truncate w-full text-black">
+                    {product.name}
+                  </h3>
+                  <div className="flex items-center gap-2 font-['JetBrains_Mono'] text-xs">
+                    <span className="font-bold text-black">₹{product.price}</span>
+                    <span className="text-neutral-400 line-through">₹{Math.round(product.price * 1.4)}</span>
+                  </div>
                 </div>
               </div>
-
-              <div className="flex flex-col items-center text-center space-y-1.5 px-2">
-                <h3 className="font-['Clash_Display'] font-medium text-[15px] uppercase tracking-wide truncate w-full text-black">
-                  {product.name}
-                </h3>
-                <div className="flex items-center gap-2 font-['JetBrains_Mono'] text-xs">
-                  <span className="font-bold text-black">₹{product.price}</span>
-                  <span className="text-neutral-400 line-through">₹{Math.round(product.price * 1.4)}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* 4. BRAND USPs */}
@@ -169,7 +191,7 @@ export const HomePage: React.FC = () => {
             </div>
 
             <div className="flex flex-col items-center space-y-3 pt-6 md:pt-0">
-              <ShieldCheck size28={28} strokeWidth={1.5} className="text-black" />
+              <ShieldCheck size={28} strokeWidth={1.5} className="text-black" />
               <h4 className="font-['Clash_Display'] font-semibold text-lg uppercase tracking-wide">Premium Heavyweight</h4>
               <p className="font-['JetBrains_Mono'] text-[11px] text-neutral-500 max-w-xs leading-relaxed">
                 Engineered with 500+ GSM pure cotton. Boxy, oversized fits designed to outlast trends.

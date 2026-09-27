@@ -1,209 +1,213 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import { ChevronDown, ChevronUp, ArrowLeft, ShoppingBag, ShieldCheck, Truck, RefreshCcw, ChevronLeft, ChevronRight, Star } from 'lucide-react';
-import { PRODUCTS } from '../data/products';
+import { ChevronDown, ChevronUp, ArrowLeft, ShoppingBag, ShieldCheck, Truck, RefreshCcw, ChevronLeft, ChevronRight, Star, Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { supabase } from '../lib/supabase';
+import { Product } from '../types';
 
-// Import Swiper CSS styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
+const safeParseArray = (field: any) => {
+  if (Array.isArray(field)) return field;
+  if (typeof field === 'string') {
+    try { return JSON.parse(field); } catch { return []; }
+  }
+  return [];
+};
 
 export const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  const product = PRODUCTS.find((p) => p.id === id) || PRODUCTS[0];
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const [selectedSize, setSelectedSize] = useState<'S' | 'M' | 'L' | 'XL' | 'XXL'>(product.sizes[0]);
+  const [selectedSize, setSelectedSize] = useState<'S' | 'M' | 'L' | 'XL' | 'XXL'>('M');
   const [quantity, setQuantity] = useState<number>(1);
   const [activeAccordion, setActiveAccordion] = useState<string | null>('details');
   const [addedFeedback, setAddedFeedback] = useState(false);
   
-  // States for Image Gallery Sync
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
 
-  const toggleAccordion = (key: string) => {
-    setActiveAccordion((prev) => (prev === key ? null : key));
+  // Phase 2: Wishlist & Reviews States
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
+
+  useEffect(() => {
+    const fetchProductData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Fetch Product
+        const { data: currentData, error: fetchError } = await supabase.from('products').select('*').eq('id', id).single();
+        if (fetchError) throw fetchError;
+        
+        if (currentData) {
+          const safeProduct = { ...currentData, images: safeParseArray(currentData.images), sizes: safeParseArray(currentData.sizes) } as Product;
+          setProduct(safeProduct);
+          if (safeProduct.sizes && safeProduct.sizes.length > 0) setSelectedSize(safeProduct.sizes[0] as any);
+          
+          // Fetch Related Products
+          const { data: relatedData } = await supabase.from('products').select('*').neq('id', id).limit(4);
+          if (relatedData) {
+            setRelatedProducts(relatedData.map(rel => ({ ...rel, images: safeParseArray(rel.images), sizes: safeParseArray(rel.sizes) })) as Product[]);
+          }
+
+          // Fetch Reviews
+          const { data: reviewsData } = await supabase.from('reviews').select('*').eq('product_id', id).order('created_at', { ascending: false });
+          if (reviewsData) setReviews(reviewsData);
+
+          // Check if Wishlisted
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            const { data: wishData } = await supabase.from('wishlist').select('*').eq('product_id', id).eq('user_id', user.id).single();
+            if (wishData) setIsWishlisted(true);
+          }
+        }
+      } catch (err: any) {
+        setError('PRODUCT ARCHIVE NOT FOUND.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchProductData();
+  }, [id]);
+
+  const handleWishlistToggle = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      alert("Please login to save items to your wishlist.");
+      return;
+    }
+
+    if (isWishlisted) {
+      await supabase.from('wishlist').delete().eq('product_id', id).eq('user_id', user.id);
+      setIsWishlisted(false);
+    } else {
+      await supabase.from('wishlist').insert([{ product_id: id, user_id: user.id }]);
+      setIsWishlisted(true);
+    }
   };
+
+  const handleReviewSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const { data: { user } } = await supabase.auth.getUser();
+    const userName = user?.email?.split('@')[0] || 'Anonymous Client';
+
+    const { data, error } = await supabase.from('reviews').insert([
+      { product_id: id, user_name: userName, rating: newReview.rating, comment: newReview.comment }
+    ]).select();
+
+    if (!error && data) {
+      setReviews([data[0], ...reviews]);
+      setNewReview({ rating: 5, comment: '' });
+    }
+  };
+
+  const toggleAccordion = (key: string) => setActiveAccordion((prev) => (prev === key ? null : key));
 
   const handleAddToCart = () => {
-    addToCart(product, selectedSize, quantity);
-    setAddedFeedback(true);
-    setTimeout(() => setAddedFeedback(false), 2500);
+    if (product) {
+      addToCart(product, selectedSize, quantity);
+      setAddedFeedback(true);
+      setTimeout(() => setAddedFeedback(false), 2500);
+    }
   };
 
-  const relatedProducts = PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
+  if (loading) return <div className="w-full min-h-[70vh] flex items-center justify-center bg-white"><span className="font-['JetBrains_Mono'] text-sm uppercase tracking-widest animate-pulse">LOADING ARCHIVE...</span></div>;
+  if (error || !product) return <div className="w-full min-h-[70vh] flex flex-col items-center justify-center bg-white space-y-4"><h1 className="font-['Clash_Display'] text-2xl uppercase tracking-widest">Archive Not Found</h1><button onClick={() => navigate('/')} className="mt-4 px-6 py-3 bg-black text-white font-['JetBrains_Mono'] text-xs font-bold uppercase tracking-widest">RETURN TO HOME</button></div>;
+
+  const averageRating = reviews.length > 0 ? (reviews.reduce((acc, rev) => acc + rev.rating, 0) / reviews.length).toFixed(1) : '5.0';
 
   return (
     <div className="w-full bg-[#FFFFFF] text-[#000000] selection:bg-black selection:text-white">
-      {/* Breadcrumb & Top Bar */}
       <div className="px-4 md:px-8 py-4 max-w-[1400px] mx-auto flex items-center justify-between border-b border-neutral-200">
         <div className="flex items-center gap-2 text-neutral-500 font-['JetBrains_Mono'] text-[11px] uppercase tracking-wider">
-          <Link to="/" className="hover:text-black transition-colors flex items-center gap-1">
-            <ArrowLeft size={14} /> HOME
-          </Link>
-          <span>/</span>
-          <Link to="/collection" className="hover:text-black transition-colors">
-            {product.category}
-          </Link>
-          <span>/</span>
-          <span className="text-black font-semibold">{product.name}</span>
-        </div>
-        <div className="hidden sm:flex items-center gap-1 font-['JetBrains_Mono'] font-semibold text-[10px] tracking-widest uppercase">
-          <Truck size={14} /> ⚡ SHIPS IN 24 HOURS
+          <Link to="/" className="hover:text-black transition-colors flex items-center gap-1"><ArrowLeft size={14} /> HOME</Link><span>/</span><span className="text-black font-semibold">{product.name}</span>
         </div>
       </div>
 
-      {/* Main Product Layout: 2 Columns */}
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 p-4 md:p-8">
         
-        {/* Left Column: Swiper.js Image Gallery (7 cols) */}
+        {/* Images */}
         <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4">
-          {/* Desktop Thumbnail Strip */}
           <div className="hidden md:flex flex-col gap-3 w-20 shrink-0">
             {product.images.map((img, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setActiveImageIndex(index);
-                  if (swiperInstance) swiperInstance.slideTo(index);
-                }}
-                className={`aspect-[3/4] overflow-hidden bg-white transition-all border ${
-                  activeImageIndex === index ? 'border-black opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
-                }`}
-              >
+              <button key={index} onClick={() => { setActiveImageIndex(index); if (swiperInstance) swiperInstance.slideTo(index); }} className={`aspect-[3/4] overflow-hidden bg-white transition-all border ${activeImageIndex === index ? 'border-black opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}>
                 <img src={img} alt="Thumbnail" className="w-full h-full object-cover object-center" />
               </button>
             ))}
           </div>
-
-          {/* Main Image Slider (Gray Block Fixed 100%) */}
           <div className="relative w-full group overflow-hidden border border-black/10 bg-white">
-            <Swiper
-              modules={[Navigation, Pagination]}
-              spaceBetween={0}
-              slidesPerView={1}
-              navigation={{
-                nextEl: '.swiper-next',
-                prevEl: '.swiper-prev'
-              }}
-              onSwiper={setSwiperInstance}
-              onSlideChange={(swiper) => setActiveImageIndex(swiper.activeIndex)}
-              className="w-full h-full"
-            >
+            <Swiper modules={[Navigation, Pagination]} spaceBetween={0} slidesPerView={1} onSwiper={setSwiperInstance} onSlideChange={(swiper) => setActiveImageIndex(swiper.activeIndex)} className="w-full h-full">
               {product.images.map((imgUrl, idx) => (
                 <SwiperSlide key={idx} className="w-full h-full bg-white">
-                  <img 
-                    src={imgUrl} 
-                    alt={`${product.name} view`} 
-                    className="w-full h-full aspect-[4/5] md:aspect-[3/4] object-cover object-center" 
-                  />
+                  <img src={imgUrl} alt={`${product.name} view`} className="w-full h-full aspect-[4/5] md:aspect-[3/4] object-cover object-center" />
                 </SwiperSlide>
               ))}
             </Swiper>
-
-            {/* Clean Navigation Arrows */}
-            <button className="swiper-prev absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/80 backdrop-blur flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white border border-black/10">
-              <ChevronLeft size={20} strokeWidth={1.5} />
-            </button>
-            <button className="swiper-next absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/80 backdrop-blur flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white border border-black/10">
-              <ChevronRight size={20} strokeWidth={1.5} />
-            </button>
-            
-            {/* Minimal Image Counter */}
             <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur px-2 py-1 text-[10px] font-['JetBrains_Mono'] font-bold rounded-sm border border-black/10">
-              {String(activeImageIndex + 1).padStart(2, '0')} / {String(product.images.length).padStart(2, '0')}
+              {String(activeImageIndex + 1).padStart(2, '0')} / {String(product.images.length || 1).padStart(2, '0')}
             </div>
+            <button onClick={handleWishlistToggle} className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/90 backdrop-blur flex items-center justify-center rounded-full hover:bg-black hover:text-white transition-colors border border-black/10">
+              <Heart size={18} fill={isWishlisted ? "currentColor" : "none"} className={isWishlisted ? "text-red-500" : ""} />
+            </button>
           </div>
         </div>
 
-        {/* Right Column: Details & Add to Cart (5 cols) */}
+        {/* Details */}
         <div className="lg:col-span-5 flex flex-col py-4 md:py-8 lg:pr-8">
-          
-          {/* Header */}
           <div className="border-b border-black pb-6 mb-6">
-            <h1 className="font-['Clash_Display'] font-semibold text-3xl sm:text-4xl uppercase tracking-tight leading-none mb-3">
-              {product.name}
-            </h1>
-            
+            <h1 className="font-['Clash_Display'] font-semibold text-3xl sm:text-4xl uppercase tracking-tight leading-none mb-3">{product.name}</h1>
             <div className="flex items-center gap-2 mb-5 font-['JetBrains_Mono'] text-xs">
-              <div className="flex text-black">
-                <Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/>
+              <div className="flex text-black items-center gap-1">
+                <Star size={14} fill="currentColor"/> <span className="font-bold">{averageRating}</span>
               </div>
-              <span className="text-neutral-500 underline cursor-pointer">42 REVIEWS</span>
+              <span className="text-neutral-500 underline cursor-pointer" onClick={() => toggleAccordion('reviews')}>{reviews.length} REVIEWS</span>
             </div>
-
             <div className="flex items-baseline gap-3">
               <span className="font-['Clash_Display'] font-medium text-2xl tracking-wide">₹{product.price}</span>
               <span className="font-['JetBrains_Mono'] text-[10px] text-neutral-500 tracking-widest">MRP INCLUSIVE OF ALL TAXES</span>
             </div>
           </div>
 
-          {/* Description */}
-          <p className="font-['JetBrains_Mono'] text-neutral-600 text-[13px] leading-relaxed mb-6">
-            {product.description} Upgrade your rotation with this premium drop. Cut for a relaxed, boxy fit to give you that effortless silhouette.
-          </p>
+          <p className="font-['JetBrains_Mono'] text-neutral-600 text-[13px] leading-relaxed mb-6">{product.description}</p>
 
-          {/* Size Selector */}
           <div className="mb-6">
             <div className="flex justify-between items-end mb-3 font-['JetBrains_Mono']">
               <span className="text-[11px] font-bold uppercase tracking-widest">SELECT SIZE</span>
-              <button className="text-[10px] text-neutral-500 hover:text-black underline">SIZE GUIDE</button>
             </div>
             <div className="grid grid-cols-5 gap-2 font-['Clash_Display']">
-              {product.sizes.map((sz) => (
-                <button
-                  key={sz}
-                  onClick={() => setSelectedSize(sz)}
-                  className={`py-3 text-sm font-medium uppercase transition-all ${
-                    selectedSize === sz
-                      ? 'bg-black text-white border-black'
-                      : 'bg-white text-black border-neutral-300 hover:border-black'
-                  } border`}
-                >
-                  {sz}
-                </button>
+              {product.sizes.map((sz: any) => (
+                <button key={sz} onClick={() => setSelectedSize(sz)} className={`py-3 text-sm font-medium uppercase transition-all ${selectedSize === sz ? 'bg-black text-white border-black' : 'bg-white text-black border-neutral-300 hover:border-black'} border`}>{sz}</button>
               ))}
             </div>
-            {product.stockCount <= 5 && (
-              <p className="font-['JetBrains_Mono'] text-red-500 text-[10px] font-bold mt-3 tracking-widest uppercase">
-                🔥 HURRY, ONLY {product.stockCount} LEFT IN STOCK!
-              </p>
-            )}
           </div>
 
-          {/* Action Buttons */}
           <div className="flex gap-3 mb-8 h-14">
             <div className="flex items-center border border-black w-28 justify-between font-['JetBrains_Mono']">
               <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-full h-full hover:bg-neutral-100 transition-colors">-</button>
               <span className="font-bold text-sm w-full text-center">{quantity}</span>
               <button onClick={() => setQuantity(quantity + 1)} className="w-full h-full hover:bg-neutral-100 transition-colors">+</button>
             </div>
-            <button
-              onClick={handleAddToCart}
-              className="flex-1 bg-black text-white font-['Clash_Display'] font-medium uppercase tracking-widest text-sm hover:bg-white hover:text-black hover:border-black border border-black transition-all flex items-center justify-center gap-2"
-            >
-              <ShoppingBag size={18} strokeWidth={1.5} />
-              {addedFeedback ? 'ADDED TO BAG' : 'ADD TO BAG'}
+            <button onClick={handleAddToCart} className="flex-1 bg-black text-white font-['Clash_Display'] font-medium uppercase tracking-widest text-sm hover:bg-white hover:text-black hover:border-black border border-black transition-all flex items-center justify-center gap-2">
+              <ShoppingBag size={18} strokeWidth={1.5} /> {addedFeedback ? 'ADDED TO BAG' : 'ADD TO BAG'}
             </button>
           </div>
 
-          {/* Trust Badges */}
-          <div className="grid grid-cols-2 gap-4 p-4 border border-black mb-8 font-['JetBrains_Mono'] text-[10px] font-bold uppercase tracking-wider text-black">
-            <div className="flex items-center gap-2"><Truck size={14} /> FREE EXPRESS SHIPPING</div>
-            <div className="flex items-center gap-2"><RefreshCcw size={14} /> 7-DAY HASSLE FREE RETURNS</div>
-            <div className="flex items-center gap-2"><ShieldCheck size={14} /> SECURE CHECKOUT</div>
-            <div className="flex items-center gap-2"><Star size={14} /> PREMIUM QUALITY ASSURED</div>
-          </div>
-
           {/* Accordions */}
-          <div className="border-t border-black font-['JetBrains_Mono']">
-            {/* Product Details */}
+          <div className="border-t border-black font-['JetBrains_Mono'] mt-8">
             <div className="border-b border-black">
               <button onClick={() => toggleAccordion('details')} className="w-full py-4 flex items-center justify-between text-left font-bold uppercase tracking-widest text-[11px]">
                 <span>PRODUCT DETAILS & FIT</span>
@@ -212,49 +216,53 @@ export const ProductDetailsPage: React.FC = () => {
               {activeAccordion === 'details' && (
                 <div className="pb-4 text-[12px] text-neutral-600 space-y-2">
                   <ul className="list-inside space-y-1">
-                    <li><span className="text-black font-bold">MATERIAL:</span> {product.specs.material}</li>
-                    <li><span className="text-black font-bold">WEIGHT:</span> {product.specs.weight}</li>
-                    <li><span className="text-black font-bold">FIT:</span> {product.specs.fit}</li>
-                    <li><span className="text-black font-bold">HARDWARE:</span> {product.specs.hardware}</li>
+                    <li><span className="text-black font-bold">PREMIUM FABRIC:</span> See inner label.</li>
+                    <li><span className="text-black font-bold">FIT:</span> Boxy, dropped shoulder.</li>
                   </ul>
-                  <p className="pt-2 text-[10px] uppercase">Model is 6'1" and wearing size L.</p>
                 </div>
               )}
             </div>
 
-            {/* Care Instructions */}
+            {/* REVIEWS SECTION */}
             <div className="border-b border-black">
-              <button onClick={() => toggleAccordion('care')} className="w-full py-4 flex items-center justify-between text-left font-bold uppercase tracking-widest text-[11px]">
-                <span>WASH CARE</span>
-                {activeAccordion === 'care' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              <button onClick={() => toggleAccordion('reviews')} className="w-full py-4 flex items-center justify-between text-left font-bold uppercase tracking-widest text-[11px]">
+                <span>CLIENT REVIEWS ({reviews.length})</span>
+                {activeAccordion === 'reviews' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
-              {activeAccordion === 'care' && (
-                <div className="pb-4 text-[12px] text-neutral-600">
-                  <p>{product.specs.care}</p>
-                  <p className="mt-2 text-[10px] uppercase">Machine wash cold. Do not tumble dry. Iron on reverse.</p>
+              {activeAccordion === 'reviews' && (
+                <div className="pb-4">
+                  <form onSubmit={handleReviewSubmit} className="mb-6 p-4 bg-neutral-50 border border-neutral-200">
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-2">Leave a Review</p>
+                    <select value={newReview.rating} onChange={(e) => setNewReview({...newReview, rating: Number(e.target.value)})} className="w-full mb-2 p-2 border border-neutral-300 text-xs outline-none">
+                      <option value={5}>5 Stars - Perfect</option>
+                      <option value={4}>4 Stars - Great</option>
+                      <option value={3}>3 Stars - Average</option>
+                      <option value={2}>2 Stars - Poor</option>
+                      <option value={1}>1 Star - Terrible</option>
+                    </select>
+                    <textarea required value={newReview.comment} onChange={(e) => setNewReview({...newReview, comment: e.target.value})} placeholder="Share your thoughts on the fit and quality..." className="w-full p-2 border border-neutral-300 text-xs mb-2 h-16 outline-none resize-none" />
+                    <button type="submit" className="bg-black text-white text-[10px] font-bold uppercase tracking-widest px-4 py-2 hover:bg-neutral-800">Submit Review</button>
+                  </form>
+
+                  <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
+                    {reviews.length === 0 ? (
+                      <p className="text-[11px] text-neutral-500 uppercase tracking-widest">No reviews yet. Be the first.</p>
+                    ) : (
+                      reviews.map((rev) => (
+                        <div key={rev.id} className="border-b border-neutral-100 pb-3">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[11px] font-bold uppercase">{rev.user_name}</span>
+                            <div className="flex text-black"><Star size={10} fill="currentColor"/><span className="text-[10px] ml-1">{rev.rating}/5</span></div>
+                          </div>
+                          <p className="text-xs text-neutral-600">{rev.comment}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
                 </div>
               )}
             </div>
           </div>
-
-        </div>
-      </div>
-
-      {/* Complete The Look / Related Products */}
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-16 border-t border-black">
-        <h2 className="font-['Clash_Display'] font-semibold text-2xl uppercase tracking-tight mb-8">COMPLETE THE LOOK</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {relatedProducts.map((rel) => (
-            <div key={rel.id} onClick={() => navigate(`/product/${rel.id}`)} className="cursor-pointer group">
-              <div className="aspect-[3/4] bg-white mb-4 overflow-hidden relative border border-black/10 group-hover:border-black transition-colors">
-                <img src={rel.images[0]} alt={rel.name} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" />
-              </div>
-              <div className="space-y-1 font-['JetBrains_Mono']">
-                <h3 className="font-bold text-[11px] uppercase tracking-wider truncate">{rel.name}</h3>
-                <p className="text-[12px] font-medium text-neutral-600">₹{rel.price}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>
