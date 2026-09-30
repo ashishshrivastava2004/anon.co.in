@@ -15,14 +15,40 @@ export const HomePage: React.FC = () => {
 
   const categories = ['ALL', 'SHIRTS', 'TROUSERS', 'TSHIRT', 'JEANS', 'CARGOS', 'POLO'];
 
-  // Using dynamic 'products' instead of static 'PRODUCTS'
+  // Safe fallback for products array
+  const safeProducts = Array.isArray(products) ? products : [];
+  
+  // Filtering logic
   const filteredProducts = selectedCategory === 'ALL'
-    ? products
-    : products.filter((p) => p.category?.toUpperCase() === selectedCategory);
+    ? safeProducts
+    : safeProducts.filter((p) => p.category?.toUpperCase() === selectedCategory);
 
   const handleQuickAdd = (product: Product, e: React.MouseEvent) => {
     e.stopPropagation();
-    addToCart(product, product.sizes[0], 1);
+    // Default fallback to "Free Size" if sizes are undefined
+    const size = Array.isArray(product.sizes) && product.sizes.length > 0 ? product.sizes[0] : 'Free Size';
+    addToCart(product, size, 1);
+  };
+
+  // Safe Image Helper Function
+  const getFirstImage = (product: any) => {
+    // Check both 'images_url' and 'images' to be extra safe
+    const imageUrls = product.images_url || product.images;
+    try {
+      if (Array.isArray(imageUrls) && imageUrls.length > 0) {
+        return imageUrls[0];
+      }
+      if (typeof imageUrls === 'string') {
+        const parsed = JSON.parse(imageUrls);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed[0];
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to parse image for product:", product.id);
+    }
+    // Fallback Image
+    return 'https://via.placeholder.com/400x600?text=Atelier+Monolith';
   };
 
   const TickerContent = () => (
@@ -45,7 +71,7 @@ export const HomePage: React.FC = () => {
   return (
     <div className="w-full bg-[#FFFFFF] text-[#000000] selection:bg-black selection:text-white pb-10">
       
-      {/* 1. HERO BANNER (Video Background without dark overlay) */}
+      {/* 1. HERO BANNER */}
       <section className="relative w-full h-[85vh] bg-neutral-900 flex items-center justify-center overflow-hidden">
         <video
           autoPlay
@@ -132,21 +158,22 @@ export const HomePage: React.FC = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-6 md:gap-y-10">
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product: any) => (
               <div
                 key={product.id}
                 onClick={() => navigate(`/product/${product.id}`)}
                 className="group cursor-pointer flex flex-col"
               >
                 <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden mb-4 border border-black/5 group-hover:border-black/20 transition-colors">
+                  {/* Applied safe image parsing here */}
                   <img
-                    src={product.images[0]}
-                    alt={product.name}
+                    src={getFirstImage(product)}
+                    alt={product.name || 'Product'}
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                     referrerPolicy="no-referrer"
                   />
                   
-                  {product.stockCount <= 5 && (
+                  {(product.stockCount || 0) <= 5 && (
                     <div className="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 text-[9px] font-['JetBrains_Mono'] font-bold tracking-widest uppercase">
                       SELLING FAST
                     </div>
@@ -164,11 +191,12 @@ export const HomePage: React.FC = () => {
 
                 <div className="flex flex-col items-center text-center space-y-1.5 px-2">
                   <h3 className="font-['Clash_Display'] font-medium text-[15px] uppercase tracking-wide truncate w-full text-black">
-                    {product.name}
+                    {product.name || 'Unknown Item'}
                   </h3>
                   <div className="flex items-center gap-2 font-['JetBrains_Mono'] text-xs">
-                    <span className="font-bold text-black">₹{product.price}</span>
-                    <span className="text-neutral-400 line-through">₹{Math.round(product.price * 1.4)}</span>
+                    {/* Fallback price and calculation applied */}
+                    <span className="font-bold text-black">₹{product.price || 0}</span>
+                    <span className="text-neutral-400 line-through">₹{Math.round((product.price || 0) * 1.4)}</span>
                   </div>
                 </div>
               </div>

@@ -11,10 +11,16 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+// Helper to Safely Parse Supabase JSON Strings/Arrays
 const safeParseArray = (field: any) => {
   if (Array.isArray(field)) return field;
   if (typeof field === 'string') {
-    try { return JSON.parse(field); } catch { return []; }
+    try { 
+      const parsed = JSON.parse(field); 
+      return Array.isArray(parsed) ? parsed : [];
+    } catch { 
+      return []; 
+    }
   }
   return [];
 };
@@ -48,33 +54,46 @@ export const ProductDetailsPage: React.FC = () => {
         setLoading(true);
         setError(null);
         
-        // Fetch Product
+        // Fetch Product (Yahan .single() sahi hai kyunki product hona hi chahiye)
         const { data: currentData, error: fetchError } = await supabase.from('products').select('*').eq('id', id).single();
         if (fetchError) throw fetchError;
         
         if (currentData) {
-          const safeProduct = { ...currentData, images: safeParseArray(currentData.images), sizes: safeParseArray(currentData.sizes) } as Product;
+          const rawImages = currentData.images_url || currentData.images;
+          
+          const safeProduct = { 
+            ...currentData, 
+            images: safeParseArray(rawImages), 
+            sizes: safeParseArray(currentData.sizes) 
+          } as Product;
+
           setProduct(safeProduct);
           if (safeProduct.sizes && safeProduct.sizes.length > 0) setSelectedSize(safeProduct.sizes[0] as any);
           
           // Fetch Related Products
           const { data: relatedData } = await supabase.from('products').select('*').neq('id', id).limit(4);
           if (relatedData) {
-            setRelatedProducts(relatedData.map(rel => ({ ...rel, images: safeParseArray(rel.images), sizes: safeParseArray(rel.sizes) })) as Product[]);
+            setRelatedProducts(relatedData.map(rel => ({ 
+              ...rel, 
+              images: safeParseArray(rel.images_url || rel.images), 
+              sizes: safeParseArray(rel.sizes) 
+            })) as Product[]);
           }
 
-          // Fetch Reviews
+          // Fetch Reviews (Yahan error nahi aayega kyunki list aati hai)
           const { data: reviewsData } = await supabase.from('reviews').select('*').eq('product_id', id).order('created_at', { ascending: false });
           if (reviewsData) setReviews(reviewsData);
 
           // Check if Wishlisted
           const { data: { user } } = await supabase.auth.getUser();
           if (user) {
-            const { data: wishData } = await supabase.from('wishlist').select('*').eq('product_id', id).eq('user_id', user.id).single();
+            // FIX APPLIED HERE: Used .maybeSingle() instead of .single()
+            const { data: wishData } = await supabase.from('wishlist').select('*').eq('product_id', id).eq('user_id', user.id).maybeSingle();
             if (wishData) setIsWishlisted(true);
           }
         }
       } catch (err: any) {
+        console.error("Product fetch error:", err);
         setError('PRODUCT ARCHIVE NOT FOUND.');
       } finally {
         setLoading(false);
@@ -129,6 +148,10 @@ export const ProductDetailsPage: React.FC = () => {
   if (error || !product) return <div className="w-full min-h-[70vh] flex flex-col items-center justify-center bg-white space-y-4"><h1 className="font-['Clash_Display'] text-2xl uppercase tracking-widest">Archive Not Found</h1><button onClick={() => navigate('/')} className="mt-4 px-6 py-3 bg-black text-white font-['JetBrains_Mono'] text-xs font-bold uppercase tracking-widest">RETURN TO HOME</button></div>;
 
   const averageRating = reviews.length > 0 ? (reviews.reduce((acc, rev) => acc + rev.rating, 0) / reviews.length).toFixed(1) : '5.0';
+  
+  const productImages = product.images && product.images.length > 0 
+    ? product.images 
+    : ['https://via.placeholder.com/600x800?text=Atelier+Monolith'];
 
   return (
     <div className="w-full bg-[#FFFFFF] text-[#000000] selection:bg-black selection:text-white">
@@ -143,7 +166,7 @@ export const ProductDetailsPage: React.FC = () => {
         {/* Images */}
         <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4">
           <div className="hidden md:flex flex-col gap-3 w-20 shrink-0">
-            {product.images.map((img, index) => (
+            {productImages.map((img, index) => (
               <button key={index} onClick={() => { setActiveImageIndex(index); if (swiperInstance) swiperInstance.slideTo(index); }} className={`aspect-[3/4] overflow-hidden bg-white transition-all border ${activeImageIndex === index ? 'border-black opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}>
                 <img src={img} alt="Thumbnail" className="w-full h-full object-cover object-center" />
               </button>
@@ -151,14 +174,14 @@ export const ProductDetailsPage: React.FC = () => {
           </div>
           <div className="relative w-full group overflow-hidden border border-black/10 bg-white">
             <Swiper modules={[Navigation, Pagination]} spaceBetween={0} slidesPerView={1} onSwiper={setSwiperInstance} onSlideChange={(swiper) => setActiveImageIndex(swiper.activeIndex)} className="w-full h-full">
-              {product.images.map((imgUrl, idx) => (
+              {productImages.map((imgUrl, idx) => (
                 <SwiperSlide key={idx} className="w-full h-full bg-white">
                   <img src={imgUrl} alt={`${product.name} view`} className="w-full h-full aspect-[4/5] md:aspect-[3/4] object-cover object-center" />
                 </SwiperSlide>
               ))}
             </Swiper>
             <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur px-2 py-1 text-[10px] font-['JetBrains_Mono'] font-bold rounded-sm border border-black/10">
-              {String(activeImageIndex + 1).padStart(2, '0')} / {String(product.images.length || 1).padStart(2, '0')}
+              {String(activeImageIndex + 1).padStart(2, '0')} / {String(productImages.length || 1).padStart(2, '0')}
             </div>
             <button onClick={handleWishlistToggle} className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/90 backdrop-blur flex items-center justify-center rounded-full hover:bg-black hover:text-white transition-colors border border-black/10">
               <Heart size={18} fill={isWishlisted ? "currentColor" : "none"} className={isWishlisted ? "text-red-500" : ""} />
@@ -177,7 +200,7 @@ export const ProductDetailsPage: React.FC = () => {
               <span className="text-neutral-500 underline cursor-pointer" onClick={() => toggleAccordion('reviews')}>{reviews.length} REVIEWS</span>
             </div>
             <div className="flex items-baseline gap-3">
-              <span className="font-['Clash_Display'] font-medium text-2xl tracking-wide">₹{product.price}</span>
+              <span className="font-['Clash_Display'] font-medium text-2xl tracking-wide">₹{product.price || 0}</span>
               <span className="font-['JetBrains_Mono'] text-[10px] text-neutral-500 tracking-widest">MRP INCLUSIVE OF ALL TAXES</span>
             </div>
           </div>
@@ -189,7 +212,7 @@ export const ProductDetailsPage: React.FC = () => {
               <span className="text-[11px] font-bold uppercase tracking-widest">SELECT SIZE</span>
             </div>
             <div className="grid grid-cols-5 gap-2 font-['Clash_Display']">
-              {product.sizes.map((sz: any) => (
+              {(product.sizes && product.sizes.length > 0 ? product.sizes : ['Free Size']).map((sz: any) => (
                 <button key={sz} onClick={() => setSelectedSize(sz)} className={`py-3 text-sm font-medium uppercase transition-all ${selectedSize === sz ? 'bg-black text-white border-black' : 'bg-white text-black border-neutral-300 hover:border-black'} border`}>{sz}</button>
               ))}
             </div>
