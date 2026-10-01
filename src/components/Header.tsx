@@ -79,9 +79,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch, onOpenAccount }) =
         <div className="w-1/3 flex justify-center">
         <Link to="/" className="inline-block hover:opacity-80 transition-opacity">
         <img 
-               src="/logo@4x.png" 
-               alt="ANON" 
-               className="h-20 md:h-22 w-auto object-contain" 
+               src="/ANON ATELIER@4x.png" 
+               alt="ANON & ATELIER" 
+               className="h-22 md:h-24 w-auto object-contain" 
               />
             </Link>
         </div>

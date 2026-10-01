@@ -76,7 +76,7 @@ export const Footer: React.FC = () => {
         <div className="md:col-span-4 space-y-6">
           <Link to="/" className="block">
             <span className="font-['Clash_Display'] text-5xl font-semibold tracking-tighter text-black uppercase">
-              ANON
+              ANON & ATELIER
             </span>
           </Link>
           <p className="font-['JetBrains_Mono'] text-xs text-neutral-500 leading-relaxed max-w-sm">
@@ -154,13 +154,13 @@ export const Footer: React.FC = () => {
           <div className="pt-6">
             <div className="text-[10px] font-bold tracking-widest text-black mb-3 uppercase">Connect</div>
             <div className="flex gap-4 text-[11px] font-bold text-neutral-500">
-              <a href="https://www.instagram.com/anon.clo.in/" target="_blank" rel="noreferrer" className="hover:text-black transition-colors uppercase">
+              <a href="https://www.instagram.com/anon.atelier.in/?hl=en" target="_blank" rel="noreferrer" className="hover:text-black transition-colors uppercase">
                 Instagram
               </a>
               <a href="https://discord.gg/vXZzdbsDf" target="_blank" rel="noreferrer" className="hover:text-black transition-colors uppercase">
                 Discord
               </a>
-              <a href="https://x.com/anonapparelz" target="_blank" rel="noreferrer" className="hover:text-black transition-colors uppercase">
+              <a href="https://x.com/anonnatelier" target="_blank" rel="noreferrer" className="hover:text-black transition-colors uppercase">
                 X (Twitter)
               </a>
             </div>
@@ -172,7 +172,7 @@ export const Footer: React.FC = () => {
       <div className="border-t border-neutral-200 bg-neutral-50 px-4 md:px-8 py-6">
         <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between text-[10px] font-['JetBrains_Mono'] font-bold text-neutral-400 uppercase tracking-widest gap-4 text-center sm:text-left">
           <div>
-            © {new Date().getFullYear()} ANON APPAREL CO. ALL RIGHTS RESERVED.
+            © {new Date().getFullYear()} ANON & ATELIER ALL RIGHTS RESERVED.
           </div>
           <div className="flex gap-4">
             <Link to="/policies" className="hover:text-black transition-colors">Terms of Service</Link>

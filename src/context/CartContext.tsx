@@ -267,7 +267,7 @@ function saveLocalOrder(orderId: string, customer: CustomerDetails, items: CartI
         {
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           date: 'TODAY',
-          location: 'ANON HQ',
+          location: 'ANON & ATELIER HQ',
           status: 'ORDER CONFIRMED & ALLOCATED',
           completed: true
         },

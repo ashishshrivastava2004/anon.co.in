@@ -22,7 +22,7 @@ export const MOCK_ORDERS: Record<string, TrackedOrder> = {
       { name: '02 / MODULAR TACTICAL CARGO PANT', code: 'AN-PT02-BLK', size: 'M', quantity: 1, price: 320 }
     ],
     timeline: [
-      { time: '14:22', date: 'SEP 15', location: 'ANON ATELIER - TOKYO HUB', status: 'ORDER DISPATCHED & SEALED', completed: true },
+      { time: '14:22', date: 'SEP 15', location: 'ANON & ATELIER - TOKYO HUB', status: 'ORDER DISPATCHED & SEALED', completed: true },
       { time: '21:05', date: 'SEP 16', location: 'NARITA INTERNATIONAL AIRPORT', status: 'EXPORT CUSTOMS CLEARED', completed: true },
       { time: '04:18', date: 'SEP 18', location: 'LEIPZIG CENTRAL TRANSIT HUB', status: 'IN TRANSIT TO REGIONAL TERMINAL', completed: true },
       { time: 'EST', date: 'SEP 21', location: 'DESTINATION ADDRESS', status: 'OUT FOR DELIVERY', completed: false }
@@ -43,8 +43,8 @@ export const MOCK_ORDERS: Record<string, TrackedOrder> = {
       { name: '03 / TECHNICAL BALLISTIC SHELL JACKET', code: 'AN-JK03-BLK', size: 'L', quantity: 1, price: 480 }
     ],
     timeline: [
-      { time: '19:45', date: 'SEP 17', location: 'ANON ATELIER - MILAN', status: 'PAYMENT VERIFIED // ALLOCATION CONFIRMED', completed: true },
-      { time: '10:00', date: 'SEP 18', location: 'ANON ATELIER - MILAN', status: 'GARMENT QUALITY CONTROL & HAND EMBOSSING', completed: true },
+      { time: '19:45', date: 'SEP 17', location: 'ANON & ATELIER - MILAN', status: 'PAYMENT VERIFIED // ALLOCATION CONFIRMED', completed: true },
+      { time: '10:00', date: 'SEP 18', location: 'ANON & ATELIER - MILAN', status: 'GARMENT QUALITY CONTROL & HAND EMBOSSING', completed: true },
       { time: 'EST', date: 'SEP 19', location: 'MILANO CENTRALE FREIGHT', status: 'SCHEDULED CARRIER PICKUP', completed: false },
       { time: 'EST', date: 'SEP 24', location: 'NEW YORK TERMINAL', status: 'DELIVERY ESTIMATE', completed: false }
     ]

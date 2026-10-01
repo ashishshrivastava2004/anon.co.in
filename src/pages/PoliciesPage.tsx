@@ -160,7 +160,7 @@ export const PoliciesPage: React.FC = () => {
                 <div>
                   <h3 className="font-bold text-black uppercase mb-2">1. Data Collection Minimalism</h3>
                   <p>
-                    ANON collects only the essential details required to process and deliver your physical garments (Name, Shipping Address, Contact Info). We do not sell, lease, or trade your data to third-party marketing consortiums.
+                    ANON & ATELIER collects only the essential details required to process and deliver your physical garments (Name, Shipping Address, Contact Info). We do not sell, lease, or trade your data to third-party marketing consortiums.
                   </p>
                 </div>
 
@@ -193,14 +193,14 @@ export const PoliciesPage: React.FC = () => {
                 <div>
                   <h3 className="font-bold text-black uppercase mb-2">1. Anti-Bot & Resale Limitation</h3>
                   <p>
-                    To ensure fair access to our limited drops, ANON reserves the right to unilaterally cancel automated bot allocations, suspicious duplicate orders, or volume stockpiling intended for unauthorized secondary resale markets.
+                    To ensure fair access to our limited drops, ANON & ATELIER reserves the right to unilaterally cancel automated bot allocations, suspicious duplicate orders, or volume stockpiling intended for unauthorized secondary resale markets.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="font-bold text-black uppercase mb-2">2. Intellectual Property</h3>
                   <p>
-                    All architectural garment patterns, imagery, logos, and digital assets on this site are the exclusive intellectual property of ANON APPAREL CO. Unauthorized reproduction is prohibited.
+                    All architectural garment patterns, imagery, logos, and digital assets on this site are the exclusive intellectual property of ANON & ATELIER. Unauthorized reproduction is prohibited.
                   </p>
                 </div>
               </div>
